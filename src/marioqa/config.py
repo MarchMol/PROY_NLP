@@ -70,6 +70,7 @@ class Settings(BaseSettings):
     sqlite_path: Path = ROOT_DIR / "data" / "game_data.sqlite"
     logs_dir: Path = ROOT_DIR / "logs"
     seed_titles_path: Path = ROOT_DIR / "data" / "seed_titles.txt"
+    aliases_manual_path: Path = ROOT_DIR / "data" / "aliases_manual.json"
 
     # --- Chunking ----------------------------------------------------------
     chunk_tokens: int = Field(default=300, ge=50)

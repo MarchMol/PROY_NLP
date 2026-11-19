@@ -95,3 +95,20 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Medición con las 4 preguntas demo** (`eval/results/baseline_demo.json`, Haiku 5.5): Recall@5 = 0.33, MRR = 0.33, Precision@5 = 0.20 (3 casos etiquetados); latencia media 2.54 s (P95 3.66 s); costo medio 0.00047 USD por consulta (~3.6k tokens).
 - **Fallas observadas (motivan las Fases 5–6):** "detrás de la cascada" recupera la lista correcta de Cascade, pero no el chunk de *Behind the Waterfall*. "Reino de las Arenas" no se asocia con *Sand Kingdom* y recupera Sphynx. En ambos casos el generador **se abstiene en lugar de inventar**. La pregunta ambigua no se marca para revisión humana.
 - Las métricas completas de la línea base se recalculan con el banco de 33 casos en la Fase 9.
+
+### D-019 · Guardrails de entrada
+- **Qué:** (1) esquema Pydantic: normaliza Unicode, quita caracteres de control y espacios repetidos, y exige ≤ `MAX_QUESTION_CHARS` (300) y caracteres de una lista blanca (letras, dígitos, puntuación común). (2) Detector de inyección por reglas sobre texto normalizado (minúsculas, sin acentos), con seis familias: ignorar instrucciones, revelar el prompt, cambio de rol, escalada de privilegios ("soy admin", "modo desarrollador"), jailbreak y delimitadores del prompt. (3) Enmascarado de PII: correo, tokens/llaves (sk-…, Bearer, JWT, hex largos), tarjetas, IPs y teléfonos, reemplazados por `[TIPO]`.
+- **Orden:** la inyección se evalúa **antes** que los caracteres, para que un `</contexto>` quede registrado como ataque y no como "carácter inválido". La pregunta que sigue en el pipeline (y la que se audita) ya va enmascarada.
+- **Por qué reglas y no un clasificador:** son deterministas, explicables en la defensa y sin costo. La segunda línea de defensa es estructural: contexto delimitado y neutralizado (D-017), rol tomado de la sesión y validación de salida (Fase 7).
+- **Riesgo conocido:** falsos negativos ante paráfrasis creativas. Se mide con la suite adversaria (Fase 10).
+
+### D-020 · Alias es↔en derivados de la wiki + glosario manual; NER por diccionario
+- **Qué:** la tabla de alias (`data/index/aliases.json`, 1158 entidades y 1314 alias) se genera en `ingest` desde: títulos y redirecciones; nombres en español de `{{foreign names}}` (Spa/SpaE/SpaA), asignados a la entidad según el encabezado donde aparecen (artículo, sub-zona o sección "Names in other languages > X"); y nombres exactos de las 835 Power Moons y los 110 atuendos de SQLite. Se completa con `data/aliases_manual.json`, un **glosario de traducción** escrito a mano (formas coloquiales como "reino del desierto" y palabras comunes como cascada→waterfall o atuendo→outfit), que **no** contiene datos del juego.
+- **Ejemplos reales extraídos:** Reino de las Arenas → Sand Kingdom, Reino Sombrero → Cap Kingdom, Cara Oculta → Dark Side, Katunda → Knucklotec, Energiluna → Power Moon, Soltitleco → Tostarenan.
+- **NER:** gazetteer con coincidencia por tokens normalizados, la más larga primero y sin solapes. Las palabras sueltas comunes ("sombrero", "luna", "reino"…) no disparan entidades. Si un alias nombra a un reino y a una zona del mismo reino, gana el reino.
+- **Por qué no spaCy:** las entidades son nombres propios del juego que un modelo general no reconoce. Bajar `es_core_news` agrega ~500 MB sin mejorar la detección. La tabla derivada de la wiki es exacta y trazable.
+- **Limitación:** no tolera errores de tipeo (no hay coincidencia difusa). Queda como mejora si el banco lo muestra.
+
+### D-021 · Expansión de la consulta
+- **Qué:** `expanded_query` = pregunta original + nombres canónicos en inglés de las entidades detectadas + traducciones del glosario para los tokens no cubiertos por entidades.
+- **Efecto medido (preguntas demo, sin fusión ni rerank):** "Reino de las Arenas" pasa de **0 resultados útiles** en ambas ramas a tener la evidencia en el top-5 de las dos. En "detrás de la cascada", BM25 pasa de RR 0.10 a 0.50. Con expansión, la evidencia correcta queda en el top-20 de ambas ramas en los 3 casos etiquetados. La fusión y el rerank (Fase 6) parten de ahí.

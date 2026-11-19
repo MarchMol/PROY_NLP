@@ -24,6 +24,7 @@ from marioqa.ingest.chunking import Chunk, ChunkParams, DocMeta, TokenCounter, c
 from marioqa.ingest.clean import clean_markdown
 from marioqa.ingest.snapshot import list_snapshots, load_manifest, load_pages, read_seed_entities
 from marioqa.logging_setup import get_logger, setup_logging
+from marioqa.nlp.aliases import build_alias_table
 
 log = get_logger(__name__)
 
@@ -44,6 +45,7 @@ class IngestReport:
     versions: dict[str, VersionStats] = field(default_factory=dict)
     bm25_docs: int = 0
     sqlite_rows: dict[str, int] = field(default_factory=dict)
+    aliases: int = 0
 
 
 def bm25_path(settings: Settings) -> Path:
@@ -52,6 +54,10 @@ def bm25_path(settings: Settings) -> Path:
 
 def registry_path(settings: Settings) -> Path:
     return settings.index_dir / f"versions_{settings.collection_name()}.json"
+
+
+def aliases_path(settings: Settings) -> Path:
+    return settings.index_dir / "aliases.json"
 
 
 def internal_chunks(
@@ -149,6 +155,11 @@ def run_ingest(settings: Settings, embedder: Embedder, count: TokenCounter) -> I
             "outfit": len(data.outfits),
             "shop_item": len(data.shop),
         }
+        table = build_alias_table(
+            pages, entities, settings.sqlite_path, settings.aliases_manual_path
+        )
+        table.save(aliases_path(settings))
+        report.aliases = len(table.aliases)
     return report
 
 
@@ -184,7 +195,12 @@ def main(argv: list[str] | None = None) -> int:
             s.embedded,
             s.deleted,
         )
-    log.info("BM25: %d docs | SQLite: %s", report.bm25_docs, report.sqlite_rows)
+    log.info(
+        "BM25: %d docs | SQLite: %s | alias: %d",
+        report.bm25_docs,
+        report.sqlite_rows,
+        report.aliases,
+    )
     return 0
 
 
