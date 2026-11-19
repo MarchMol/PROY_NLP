@@ -15,8 +15,7 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Datos pesados / regenerables (ver README: se regeneran con `make ingest`)
-data/raw/
+# Regenerables desde data/raw/ (los snapshots crudos SÍ se versionan: fijan el corpus)
 data/processed/
 chroma/
 *.sqlite

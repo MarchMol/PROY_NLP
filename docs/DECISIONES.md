@@ -59,3 +59,8 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Qué:** `chunk_id = p<pageid>-<sha1(ruta de sección)[:8]>-<nº de ventana>`. `version` = ID del snapshot (fecha de corte), y cada chunk lleva también `revid` y `cutoff`.
 - **Por qué:** el id no depende del contenido de otras secciones, así que editar una sección no cambia los ids del resto. Dos snapshots producen el mismo `chunk_id` para la misma sección. La pareja (`version`, `chunk_id`) identifica un chunk de forma única en el índice, y el versionado active/deprecated (Fase 3) opera sobre `version`.
 - **Alternativa:** hash del texto como id. Se descartó porque cualquier edición menor cambiaría el id y rompería las referencias del banco de pruebas.
+
+### D-012 · Los snapshots crudos se versionan en git
+- **Qué:** `data/raw/<snapshot>/` se commitea (~5 MB por snapshot, JSON de texto). `data/processed/`, `chroma/` y `*.sqlite` siguen ignorados porque se regeneran de forma determinista desde el raw.
+- **Por qué:** la wiki cambia continuamente. Re-descargar produce otros `revid` y otro texto, lo que rompería las fuentes esperadas del banco de pruebas. Fijar el snapshot hace el proyecto reproducible. CC BY-SA permite redistribuir con atribución, que va en `data/raw/README.md`.
+- **Alternativa:** publicar el snapshot como *release asset* o con Git LFS. No hace falta con este tamaño.
