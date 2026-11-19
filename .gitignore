@@ -1,0 +1,42 @@
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Entornos y caches de Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Datos pesados / regenerables (ver README: se regeneran con `make ingest`)
+data/raw/
+data/processed/
+chroma/
+*.sqlite
+*.sqlite3
+*.db
+*.pkl
+models/
+.hf_cache/
+
+# Logs y auditoría
+logs/
+*.log
+
+# Salidas intermedias del benchmark (el reporte final sí se versiona)
+eval/runs/
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*

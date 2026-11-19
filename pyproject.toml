@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marioqa"
+version = "0.1.0"
+description = "Asistente RAG agéntico en español sobre Super Mario Odyssey (CC3103, UVG)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "MIT"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+markers = [
+    "network: requiere red (wiki o HuggingFace); se omite por defecto",
+    "slow: carga modelos pesados",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
