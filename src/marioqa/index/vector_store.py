@@ -64,6 +64,16 @@ class VectorStore:
             metadatas=[chunk_to_metadata(c) for c in chunks],
         )
 
+    def get_chunks(self, ids: list[str]) -> dict[str, Chunk]:
+        """doc_id → Chunk (para candidatos que solo trajo la rama léxica)."""
+        if not ids:
+            return {}
+        got = self.collection.get(ids=ids, include=["documents", "metadatas"])
+        return {
+            i: metadata_to_chunk(doc, meta)
+            for i, doc, meta in zip(got["ids"], got["documents"], got["metadatas"], strict=True)
+        }
+
     def delete(self, ids: list[str]) -> None:
         if ids:
             self.collection.delete(ids=ids)
