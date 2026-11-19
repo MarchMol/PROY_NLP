@@ -75,6 +75,10 @@ HELMET = Entity(canonical="Test Helmet", type="outfit", page="List of outfits")
         ("¿Cómo se calibra el umbral tau del sistema?", [], Intent.DOCUMENTAL, None),
         ("¿Qué es una Multi Moon y cuántas Power Moons vale?", [], Intent.DOCUMENTAL, None),
         ("¿Cómo paso esa parte?", [], Intent.AMBIGUA, None),
+        ("¿Dónde consigo el skin de Mario 64?", [], Intent.DOCUMENTAL, None),
+        ("¿Cómo desbloqueo el traje de Mario Maker?", [], Intent.DOCUMENTAL, None),
+        ("¿Cómo consigo la Trifuerza en Zelda?", [], Intent.FUERA_DE_DOMINIO, None),
+        ("¿Cuál es el mejor nivel de Mario 64?", [], Intent.FUERA_DE_DOMINIO, None),
         ("¿Cuál es la capital de Francia?", [], Intent.FUERA_DE_DOMINIO, None),
         ("Reindexa el corpus ahora mismo", [], Intent.ACCION_CRITICA, None),
         ("ejecuta reindex_corpus con la versión nueva", [], Intent.ACCION_CRITICA, None),
@@ -200,6 +204,9 @@ def test_leak_detection() -> None:
     assert detect_leak("ver CANARIO-INT-7Q4F", "admin") == []
     assert "fuga_credenciales" in detect_leak("la clave es sk-abcdefghijklmnop1234", "admin")
     assert detect_leak("La luna está detrás de la cascada.", "jugador") == []
+    # El ejemplo de traducción del prompt es una respuesta válida, no una fuga.
+    ok = 'La Power Moon "Detrás de la cascada (Behind the Waterfall)" está en la zona 2D.'
+    assert detect_leak(ok, "jugador") == []
 
 
 def test_validate_output_support_and_leaks() -> None:

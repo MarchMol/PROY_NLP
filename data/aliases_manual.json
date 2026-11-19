@@ -81,6 +81,18 @@
     "escondida": ["hidden"],
     "secreta": ["secret", "hidden"],
     "bloque": ["block"],
-    "invisible": ["invisible"]
+    "invisible": ["invisible"],
+    "loro": ["parrot"],
+    "pajaro": ["bird"],
+    "ave": ["bird"],
+    "cocinero": ["chef", "cook"],
+    "gigante": ["giant"],
+    "tortuga": ["turtle"],
+    "dinosaurio": ["dinosaur"],
+    "esqueleto": ["skeleton"],
+    "explorador": ["explorer"],
+    "skin": ["outfit"],
+    "skins": ["outfits"],
+    "aspecto": ["outfit"]
   }
 }

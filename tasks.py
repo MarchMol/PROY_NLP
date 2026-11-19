@@ -76,6 +76,31 @@ def demo() -> int:
     return _run(PY, "-m", "marioqa.eval.run_demo")
 
 
+def run() -> int:
+    """Levanta la API + UI en http://127.0.0.1:8000 (Ctrl+C para salir)."""
+    return _run(PY, "-m", "marioqa.api.app")
+
+
+def bench() -> int:
+    """Benchmark de 33 casos (línea base vs agente) → eval/report.md."""
+    return _run(PY, "-m", "marioqa.eval.run_bench")
+
+
+def security() -> int:
+    """Solo la suite adversaria (8 casos de seguridad) contra el agente."""
+    return _run(
+        PY,
+        "-m",
+        "marioqa.eval.run_bench",
+        "--only",
+        "agente",
+        "--cases",
+        "eval/security.jsonl",
+        "--report",
+        "eval/security_report.md",
+    )
+
+
 TASKS: dict[str, Callable[[], int]] = {
     "setup": setup,
     "test": test,
@@ -85,6 +110,9 @@ TASKS: dict[str, Callable[[], int]] = {
     "ingest-chunks": ingest_chunks,
     "ingest": ingest,
     "demo": demo,
+    "run": run,
+    "bench": bench,
+    "security": security,
 }
 
 

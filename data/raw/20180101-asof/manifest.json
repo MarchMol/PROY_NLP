@@ -1,0 +1,898 @@
+{
+ "snapshot_id": "20180101-asof",
+ "cutoff": "2018-01-01T00:00:00Z",
+ "mode": "as_of",
+ "created_at": "2026-11-19T19:41:30Z",
+ "source": "https://www.mariowiki.com/api.php",
+ "license": "CC BY-SA (Super Mario Wiki)",
+ "pages": [
+  {
+   "title": "Checkpoint Flag",
+   "requested_titles": [
+    "Checkpoint Flag"
+   ],
+   "pageid": 14472,
+   "revid": 2363648,
+   "timestamp": "2017-12-26T18:43:53Z",
+   "url": "https://www.mariowiki.com/Checkpoint_Flag",
+   "file": "pages/14472.json",
+   "sha256": "5fe8a54b9cd8d296e35ec87cdf07e5699be826f1e0a89cebd64bff6093153582"
+  },
+  {
+   "title": "Ty-foo",
+   "requested_titles": [
+    "Ty-foo"
+   ],
+   "pageid": 168234,
+   "revid": 2355126,
+   "timestamp": "2017-12-12T21:40:22Z",
+   "url": "https://www.mariowiki.com/Ty-foo",
+   "file": "pages/168234.json",
+   "sha256": "1def9ffcfc542ed6e703888ae3b3e432a316f1bdc7573626ce010727281512ec"
+  },
+  {
+   "title": "Super Mario Odyssey",
+   "requested_titles": [
+    "Super Mario Odyssey"
+   ],
+   "pageid": 219989,
+   "revid": 2366233,
+   "timestamp": "2017-12-31T18:16:21Z",
+   "url": "https://www.mariowiki.com/Super_Mario_Odyssey",
+   "file": "pages/219989.json",
+   "sha256": "11e11b8d6ab3e9d4711a202fbe9c060720bf86e4d18ac42011428258ecb8779f"
+  },
+  {
+   "title": "Metro Kingdom",
+   "requested_titles": [
+    "Metro Kingdom"
+   ],
+   "pageid": 220141,
+   "revid": 2365843,
+   "timestamp": "2017-12-30T22:17:31Z",
+   "url": "https://www.mariowiki.com/Metro_Kingdom",
+   "file": "pages/220141.json",
+   "sha256": "744e51d709acd77680a579c246e8c8a042d90500444d93a0c2cf2581537a9cd7"
+  },
+  {
+   "title": "Cappy",
+   "requested_titles": [
+    "Cappy"
+   ],
+   "pageid": 227623,
+   "revid": 2365184,
+   "timestamp": "2017-12-29T20:42:35Z",
+   "url": "https://www.mariowiki.com/Cappy",
+   "file": "pages/227623.json",
+   "sha256": "6bc485ac606dc7af31f1b3fa00f56399bcb027826a28572890410f4209694d93"
+  },
+  {
+   "title": "Moe-Eye",
+   "requested_titles": [
+    "Moe-Eye"
+   ],
+   "pageid": 227858,
+   "revid": 2365617,
+   "timestamp": "2017-12-30T16:50:04Z",
+   "url": "https://www.mariowiki.com/Moe-Eye",
+   "file": "pages/227858.json",
+   "sha256": "3d7879a4c0748cc312925e0c641e7af4eb93f37a87bde282a82123a31243ad71"
+  },
+  {
+   "title": "Uproot",
+   "requested_titles": [
+    "Uproot"
+   ],
+   "pageid": 227862,
+   "revid": 2356393,
+   "timestamp": "2017-12-16T10:06:51Z",
+   "url": "https://www.mariowiki.com/Uproot",
+   "file": "pages/227862.json",
+   "sha256": "95418acb8061ec42d99a2423093c22261182def97c12d37b0504acd6f761657d"
+  },
+  {
+   "title": "Power Moon",
+   "requested_titles": [
+    "Power Moon"
+   ],
+   "pageid": 228478,
+   "revid": 2365829,
+   "timestamp": "2017-12-30T21:42:51Z",
+   "url": "https://www.mariowiki.com/Power_Moon",
+   "file": "pages/228478.json",
+   "sha256": "47e0ce72f07dc774fed3ad841ec52bed3c7271f42dc494fbc9e131c11ff359b6"
+  },
+  {
+   "title": "Multi Moon",
+   "requested_titles": [
+    "Multi Moon"
+   ],
+   "pageid": 228495,
+   "revid": 2362514,
+   "timestamp": "2017-12-24T16:18:00Z",
+   "url": "https://www.mariowiki.com/Multi_Moon",
+   "file": "pages/228495.json",
+   "sha256": "e2ce888719772815ba4398905937216949169c5d874fcbf5c5357a21d8ba95d6"
+  },
+  {
+   "title": "Life-Up Heart",
+   "requested_titles": [
+    "Life-Up Heart"
+   ],
+   "pageid": 229397,
+   "revid": 2353583,
+   "timestamp": "2017-12-09T01:09:01Z",
+   "url": "https://www.mariowiki.com/Life-Up_Heart",
+   "file": "pages/229397.json",
+   "sha256": "365a6c4b0374c922c5ad05dc1aa0663af36db962019e3bb33c9d15189ef0f6c6"
+  },
+  {
+   "title": "Sand Kingdom",
+   "requested_titles": [
+    "Sand Kingdom"
+   ],
+   "pageid": 229460,
+   "revid": 2365495,
+   "timestamp": "2017-12-30T09:57:27Z",
+   "url": "https://www.mariowiki.com/Sand_Kingdom",
+   "file": "pages/229460.json",
+   "sha256": "be8ccc5564a8178796b0870977e47a8c0830e876c22e52a2dff56527b6af8e9f"
+  },
+  {
+   "title": "Capture",
+   "requested_titles": [
+    "Capture"
+   ],
+   "pageid": 230294,
+   "revid": 2361240,
+   "timestamp": "2017-12-22T18:10:55Z",
+   "url": "https://www.mariowiki.com/Capture",
+   "file": "pages/230294.json",
+   "sha256": "89c8fdff51ba213186336721a8df95524343baa5c8f13e55c8f837c935290c75"
+  },
+  {
+   "title": "Jaxi",
+   "requested_titles": [
+    "Jaxi"
+   ],
+   "pageid": 231214,
+   "revid": 2366238,
+   "timestamp": "2017-12-31T18:19:04Z",
+   "url": "https://www.mariowiki.com/Jaxi",
+   "file": "pages/231214.json",
+   "sha256": "91c893b4c3bacd11b297bc7a1e4de1aad74a89b006bd1ae2c4cc5fcf178fb8a1"
+  },
+  {
+   "title": "Wooded Kingdom",
+   "requested_titles": [
+    "Wooded Kingdom"
+   ],
+   "pageid": 232206,
+   "revid": 2365496,
+   "timestamp": "2017-12-30T09:57:55Z",
+   "url": "https://www.mariowiki.com/Wooded_Kingdom",
+   "file": "pages/232206.json",
+   "sha256": "763bc783588f9ed5c86ba6231c86238de75ed825d5acdbf388439143989b8826"
+  },
+  {
+   "title": "Luncheon Kingdom",
+   "requested_titles": [
+    "Luncheon Kingdom"
+   ],
+   "pageid": 232906,
+   "revid": 2365501,
+   "timestamp": "2017-12-30T10:04:20Z",
+   "url": "https://www.mariowiki.com/Luncheon_Kingdom",
+   "file": "pages/232906.json",
+   "sha256": "4fd2c964997e7f4df5bb3eeaf6855d8c1f04b55f8d0702b1660f18cf64fa6515"
+  },
+  {
+   "title": "Odyssey",
+   "requested_titles": [
+    "Odyssey"
+   ],
+   "pageid": 233008,
+   "revid": 2362845,
+   "timestamp": "2017-12-25T08:13:50Z",
+   "url": "https://www.mariowiki.com/Odyssey",
+   "file": "pages/233008.json",
+   "sha256": "43eb94dd7b024fef017a2b59e44f5cf73f73312a0c50fd14543ad098cb2dfedb"
+  },
+  {
+   "title": "Tiara",
+   "requested_titles": [
+    "Tiara"
+   ],
+   "pageid": 234197,
+   "revid": 2351716,
+   "timestamp": "2017-12-05T12:16:28Z",
+   "url": "https://www.mariowiki.com/Tiara",
+   "file": "pages/234197.json",
+   "sha256": "b2a24b49ac27e47ec3a40b968578dd83f2447c25b979e76611b7b54ef46768ff"
+  },
+  {
+   "title": "Cascade Kingdom",
+   "requested_titles": [
+    "Cascade Kingdom"
+   ],
+   "pageid": 234547,
+   "revid": 2365453,
+   "timestamp": "2017-12-30T06:34:42Z",
+   "url": "https://www.mariowiki.com/Cascade_Kingdom",
+   "file": "pages/234547.json",
+   "sha256": "9e036ac0484d747730391b8011546597e7a60875fc151cb1cc7e586f606c8aac"
+  },
+  {
+   "title": "New Donk City",
+   "requested_titles": [
+    "New Donk City"
+   ],
+   "pageid": 234758,
+   "revid": 2291454,
+   "timestamp": "2017-09-17T01:20:24Z",
+   "url": "https://www.mariowiki.com/New_Donk_City",
+   "file": "pages/234758.json",
+   "sha256": "901973ac7870a2facd9f7cefc9ec6523d11d3d9119b8bbeb841e2c09836e0c67"
+  },
+  {
+   "title": "Crazy Cap",
+   "requested_titles": [
+    "Crazy Cap"
+   ],
+   "pageid": 234774,
+   "revid": 2366334,
+   "timestamp": "2017-12-31T21:51:55Z",
+   "url": "https://www.mariowiki.com/Crazy_Cap",
+   "file": "pages/234774.json",
+   "sha256": "1cb6689b9dd2e4f66163acd57f263d33432167da8e7bf0a92b90694e1860953a"
+  },
+  {
+   "title": "Regional coin",
+   "requested_titles": [
+    "Regional coin"
+   ],
+   "pageid": 234777,
+   "revid": 2361512,
+   "timestamp": "2017-12-23T03:43:27Z",
+   "url": "https://www.mariowiki.com/Regional_coin",
+   "file": "pages/234777.json",
+   "sha256": "1cb3bf371674e6c7ffdb6620388b94d5921ff661047428365f31d7a13015b5a1"
+  },
+  {
+   "title": "Seaside Kingdom",
+   "requested_titles": [
+    "Seaside Kingdom"
+   ],
+   "pageid": 234921,
+   "revid": 2365499,
+   "timestamp": "2017-12-30T10:04:03Z",
+   "url": "https://www.mariowiki.com/Seaside_Kingdom",
+   "file": "pages/234921.json",
+   "sha256": "c9b970f744ad916e9a2969570a14cb69e51e6dadee216356642e6e96ecca8eca"
+  },
+  {
+   "title": "Cap Kingdom",
+   "requested_titles": [
+    "Cap Kingdom"
+   ],
+   "pageid": 234972,
+   "revid": 2365451,
+   "timestamp": "2017-12-30T06:27:57Z",
+   "url": "https://www.mariowiki.com/Cap_Kingdom",
+   "file": "pages/234972.json",
+   "sha256": "6d9742a74b32cb766a347cd26ed5708974559d0aa5864e64876bfe4db0254041"
+  },
+  {
+   "title": "Snow Kingdom",
+   "requested_titles": [
+    "Snow Kingdom"
+   ],
+   "pageid": 235022,
+   "revid": 2365498,
+   "timestamp": "2017-12-30T10:03:37Z",
+   "url": "https://www.mariowiki.com/Snow_Kingdom",
+   "file": "pages/235022.json",
+   "sha256": "cdeb514b0e11a5877363e8a712e4ac97b57c5c2a59e026788c41094504eec0bc"
+  },
+  {
+   "title": "Glydon",
+   "requested_titles": [
+    "Glydon"
+   ],
+   "pageid": 235526,
+   "revid": 2358285,
+   "timestamp": "2017-12-19T14:28:58Z",
+   "url": "https://www.mariowiki.com/Glydon",
+   "file": "pages/235526.json",
+   "sha256": "1c257e7706dd17c2c37dd4fd75424eb8bfbeb273d486442fec216e20b4097295"
+  },
+  {
+   "title": "Hariet",
+   "requested_titles": [
+    "Hariet"
+   ],
+   "pageid": 235688,
+   "revid": 2363931,
+   "timestamp": "2017-12-27T06:39:38Z",
+   "url": "https://www.mariowiki.com/Hariet",
+   "file": "pages/235688.json",
+   "sha256": "5cf19e24de2d419e47e2c0d2f192c4064b2c58693e6b60802165bbf79046ef70"
+  },
+  {
+   "title": "Topper",
+   "requested_titles": [
+    "Topper"
+   ],
+   "pageid": 235974,
+   "revid": 2360373,
+   "timestamp": "2017-12-21T19:13:55Z",
+   "url": "https://www.mariowiki.com/Topper",
+   "file": "pages/235974.json",
+   "sha256": "2f811484e9bc78f1dd5a0fb3d27d70bb4ec4e6f7c2c8a0afdc0946ae13fe9acf"
+  },
+  {
+   "title": "Mechawiggler",
+   "requested_titles": [
+    "Mechawiggler"
+   ],
+   "pageid": 235988,
+   "revid": 2360399,
+   "timestamp": "2017-12-21T19:42:23Z",
+   "url": "https://www.mariowiki.com/Mechawiggler",
+   "file": "pages/235988.json",
+   "sha256": "681058abe15e5fc9d9e5ea595294192225a191dcb7045dd0792ee00f92813ed1"
+  },
+  {
+   "title": "Lake Kingdom",
+   "requested_titles": [
+    "Lake Kingdom"
+   ],
+   "pageid": 236898,
+   "revid": 2366331,
+   "timestamp": "2017-12-31T21:45:36Z",
+   "url": "https://www.mariowiki.com/Lake_Kingdom",
+   "file": "pages/236898.json",
+   "sha256": "f6d103a2b50d4c92c7bfe65b3db70b67b773485a023a5f6e0dae296661d225dd"
+  },
+  {
+   "title": "Madame Broode",
+   "requested_titles": [
+    "Madame Broode"
+   ],
+   "pageid": 237195,
+   "revid": 2366335,
+   "timestamp": "2017-12-31T21:56:15Z",
+   "url": "https://www.mariowiki.com/Madame_Broode",
+   "file": "pages/237195.json",
+   "sha256": "58d380827f4d379359366d9816435ee5aa1183bccbd989ec0e170861185441ab"
+  },
+  {
+   "title": "Moon Kingdom",
+   "requested_titles": [
+    "Moon Kingdom"
+   ],
+   "pageid": 237293,
+   "revid": 2365504,
+   "timestamp": "2017-12-30T10:35:02Z",
+   "url": "https://www.mariowiki.com/Moon_Kingdom",
+   "file": "pages/237293.json",
+   "sha256": "fd5fe727b89950565448868f530026ed3be51d4cf9d76ad37b8f3e6e36c91149"
+  },
+  {
+   "title": "Lost Kingdom",
+   "requested_titles": [
+    "Lost Kingdom"
+   ],
+   "pageid": 237295,
+   "revid": 2365795,
+   "timestamp": "2017-12-30T20:45:31Z",
+   "url": "https://www.mariowiki.com/Lost_Kingdom",
+   "file": "pages/237295.json",
+   "sha256": "80b25bb1d0b2a23c07acb8631b18f4217f28435e22c4357812a3091c7d0b26bf"
+  },
+  {
+   "title": "Bowser's Kingdom",
+   "requested_titles": [
+    "Bowser's Kingdom"
+   ],
+   "pageid": 237334,
+   "revid": 2365503,
+   "timestamp": "2017-12-30T10:33:07Z",
+   "url": "https://www.mariowiki.com/Bowser's_Kingdom",
+   "file": "pages/237334.json",
+   "sha256": "8c5ba0fd421edc1d13595f2a970537afa12694e36f39884413844a17471dcf0e"
+  },
+  {
+   "title": "Spewart",
+   "requested_titles": [
+    "Spewart"
+   ],
+   "pageid": 237570,
+   "revid": 2364003,
+   "timestamp": "2017-12-27T14:08:30Z",
+   "url": "https://www.mariowiki.com/Spewart",
+   "file": "pages/237570.json",
+   "sha256": "228a10684015c4166091bfe05cb376553b360547bb72a4e073c203a57b9a575e"
+  },
+  {
+   "title": "Cloud Kingdom",
+   "requested_titles": [
+    "Cloud Kingdom"
+   ],
+   "pageid": 237619,
+   "revid": 2365483,
+   "timestamp": "2017-12-30T09:27:14Z",
+   "url": "https://www.mariowiki.com/Cloud_Kingdom",
+   "file": "pages/237619.json",
+   "sha256": "cd9e3659a9657c5d777349bcb981f1755721e332d47d6646c5ddfcd9764956d4"
+  },
+  {
+   "title": "Broodals",
+   "requested_titles": [
+    "Broodals"
+   ],
+   "pageid": 237631,
+   "revid": 2363864,
+   "timestamp": "2017-12-27T03:34:58Z",
+   "url": "https://www.mariowiki.com/Broodals",
+   "file": "pages/237631.json",
+   "sha256": "1bdc168978dc1287810783b9ec0dd137c6171920131ce3b816c5e22d4f51a10b"
+  },
+  {
+   "title": "Tropical Wiggler",
+   "requested_titles": [
+    "Tropical Wiggler"
+   ],
+   "pageid": 237633,
+   "revid": 2366330,
+   "timestamp": "2017-12-31T21:45:03Z",
+   "url": "https://www.mariowiki.com/Tropical_Wiggler",
+   "file": "pages/237633.json",
+   "sha256": "99d3a20a0cd02fb43c72987b48e48f91b846864da08fbf8056bbb252567c9eaf"
+  },
+  {
+   "title": "Bubblainian",
+   "requested_titles": [
+    "Bubblainian"
+   ],
+   "pageid": 237637,
+   "revid": 2356891,
+   "timestamp": "2017-12-17T06:07:07Z",
+   "url": "https://www.mariowiki.com/Bubblainian",
+   "file": "pages/237637.json",
+   "sha256": "75523ce179a65829f7c5e9bcd75fe38b71e56fc55b73dbfdec7698a3b39ba7d0"
+  },
+  {
+   "title": "Gushen",
+   "requested_titles": [
+    "Gushen"
+   ],
+   "pageid": 237641,
+   "revid": 2361166,
+   "timestamp": "2017-12-22T16:56:30Z",
+   "url": "https://www.mariowiki.com/Gushen",
+   "file": "pages/237641.json",
+   "sha256": "621eb1774266b5b43ef756b097881e449e5f09240381a89169b64a14464d1cdc"
+  },
+  {
+   "title": "Mollusque-Lanceur",
+   "requested_titles": [
+    "Mollusque-Lanceur"
+   ],
+   "pageid": 237648,
+   "revid": 2363652,
+   "timestamp": "2017-12-26T18:50:43Z",
+   "url": "https://www.mariowiki.com/Mollusque-Lanceur",
+   "file": "pages/237648.json",
+   "sha256": "2e2ef29c03dad7ac274b51c687bdc2234551fabd3d7931d13ae6093573313144"
+  },
+  {
+   "title": "Dark Side",
+   "requested_titles": [
+    "Dark Side"
+   ],
+   "pageid": 237656,
+   "revid": 2365507,
+   "timestamp": "2017-12-30T10:39:12Z",
+   "url": "https://www.mariowiki.com/Dark_Side",
+   "file": "pages/237656.json",
+   "sha256": "306bb1aa915373ead51f38ebdeea6c660a609f93009c282b3a93cafe10f3a700"
+  },
+  {
+   "title": "Knucklotec",
+   "requested_titles": [
+    "Knucklotec"
+   ],
+   "pageid": 237660,
+   "revid": 2366339,
+   "timestamp": "2017-12-31T22:13:00Z",
+   "url": "https://www.mariowiki.com/Knucklotec",
+   "file": "pages/237660.json",
+   "sha256": "ecb8a813f70d560572dd09bf36733be27a9d1a56fd43444345e2b7cce82320db"
+  },
+  {
+   "title": "Rango",
+   "requested_titles": [
+    "Rango"
+   ],
+   "pageid": 237718,
+   "revid": 2357286,
+   "timestamp": "2017-12-17T23:08:42Z",
+   "url": "https://www.mariowiki.com/Rango",
+   "file": "pages/237718.json",
+   "sha256": "607648346b0ceb7f24c99a90c3ff71b4521069843d5711c3e83d64bbd2e50078"
+  },
+  {
+   "title": "Torkdrift",
+   "requested_titles": [
+    "Torkdrift"
+   ],
+   "pageid": 237725,
+   "revid": 2357620,
+   "timestamp": "2017-12-18T14:39:25Z",
+   "url": "https://www.mariowiki.com/Torkdrift",
+   "file": "pages/237725.json",
+   "sha256": "5fb97c5da9037323e04eecb4e55027fd0c9d970b706d523ac0a99aafd90497b2"
+  },
+  {
+   "title": "Talkatoo",
+   "requested_titles": [
+    "Talkatoo"
+   ],
+   "pageid": 237729,
+   "revid": 2364821,
+   "timestamp": "2017-12-29T02:06:31Z",
+   "url": "https://www.mariowiki.com/Talkatoo",
+   "file": "pages/237729.json",
+   "sha256": "b213da196a185d57de25ed3688973c842d20c3f91451451f8314004f63f4a7bb"
+  },
+  {
+   "title": "Ruined Dragon",
+   "requested_titles": [
+    "Ruined Dragon"
+   ],
+   "pageid": 237819,
+   "revid": 2357667,
+   "timestamp": "2017-12-18T15:29:17Z",
+   "url": "https://www.mariowiki.com/Ruined_Dragon",
+   "file": "pages/237819.json",
+   "sha256": "28ac9a578b94fb45c34b740042f1cf569d15fcabf042bf674313ccec8e81b3af"
+  },
+  {
+   "title": "Cookatiel",
+   "requested_titles": [
+    "Cookatiel"
+   ],
+   "pageid": 237824,
+   "revid": 2363332,
+   "timestamp": "2017-12-26T03:02:21Z",
+   "url": "https://www.mariowiki.com/Cookatiel",
+   "file": "pages/237824.json",
+   "sha256": "a20071d7b024cbde62d3128c89b43f46841b4ac8c5f31f5890ddc3deb7fe922b"
+  },
+  {
+   "title": "Ruined Kingdom",
+   "requested_titles": [
+    "Ruined Kingdom"
+   ],
+   "pageid": 237838,
+   "revid": 2365842,
+   "timestamp": "2017-12-30T22:15:01Z",
+   "url": "https://www.mariowiki.com/Ruined_Kingdom",
+   "file": "pages/237838.json",
+   "sha256": "921b6ddbcfc398a6747e20073bc569059e93c86966226fadaefe621409c035dd"
+  },
+  {
+   "title": "Pokio",
+   "requested_titles": [
+    "Pokio"
+   ],
+   "pageid": 237839,
+   "revid": 2357947,
+   "timestamp": "2017-12-18T22:12:58Z",
+   "url": "https://www.mariowiki.com/Pokio",
+   "file": "pages/237839.json",
+   "sha256": "6f3c696c38e1d60e1205079dbede9c6a067fb51dc4dadbaaa42fc6d0b769e979"
+  },
+  {
+   "title": "RoboBrood",
+   "requested_titles": [
+    "RoboBrood"
+   ],
+   "pageid": 237869,
+   "revid": 2366291,
+   "timestamp": "2017-12-31T20:58:11Z",
+   "url": "https://www.mariowiki.com/RoboBrood",
+   "file": "pages/237869.json",
+   "sha256": "3696a3f9deeec94140d50d7f6273fd87c2f89b2f458fb69aa0425e5c51d0f9bd"
+  },
+  {
+   "title": "Uncle amiibo",
+   "requested_titles": [
+    "Uncle amiibo"
+   ],
+   "pageid": 237934,
+   "revid": 2356409,
+   "timestamp": "2017-12-16T10:51:09Z",
+   "url": "https://www.mariowiki.com/Uncle_amiibo",
+   "file": "pages/237934.json",
+   "sha256": "dfa8997ead2696df8905740c90f925785784806adb03ee49a6868d6107f58756"
+  },
+  {
+   "title": "Bonneter",
+   "requested_titles": [
+    "Bonneter"
+   ],
+   "pageid": 238046,
+   "revid": 2355664,
+   "timestamp": "2017-12-14T04:59:07Z",
+   "url": "https://www.mariowiki.com/Bonneter",
+   "file": "pages/238046.json",
+   "sha256": "ebe8474929f66bc183ced2cdd9fbf640a0b58e0ff2830cb9199b21b14457ab5d"
+  },
+  {
+   "title": "Tostarenan",
+   "requested_titles": [
+    "Tostarenan"
+   ],
+   "pageid": 238048,
+   "revid": 2357505,
+   "timestamp": "2017-12-18T08:11:53Z",
+   "url": "https://www.mariowiki.com/Tostarenan",
+   "file": "pages/238048.json",
+   "sha256": "2dbc267299e4cc79d33e78bde6409d82c296d91b1dc13f42a8b1dda469223e33"
+  },
+  {
+   "title": "Volbonan",
+   "requested_titles": [
+    "Volbonan"
+   ],
+   "pageid": 238075,
+   "revid": 2356894,
+   "timestamp": "2017-12-17T06:09:06Z",
+   "url": "https://www.mariowiki.com/Volbonan",
+   "file": "pages/238075.json",
+   "sha256": "aa7c0fc96fad3afc281a1972c749bfd9b7c100b77426e8f1cb15d564d7afde70"
+  },
+  {
+   "title": "Shiverian",
+   "requested_titles": [
+    "Shiverian"
+   ],
+   "pageid": 238082,
+   "revid": 2356895,
+   "timestamp": "2017-12-17T06:09:54Z",
+   "url": "https://www.mariowiki.com/Shiverian",
+   "file": "pages/238082.json",
+   "sha256": "ca2b983e9d8942d0ac1fa96f9c30af1466c92ca9090fac96d216f6edd39cb22b"
+  },
+  {
+   "title": "Sphynx",
+   "requested_titles": [
+    "Sphynx"
+   ],
+   "pageid": 238207,
+   "revid": 2349460,
+   "timestamp": "2017-11-30T23:41:55Z",
+   "url": "https://www.mariowiki.com/Sphynx",
+   "file": "pages/238207.json",
+   "sha256": "9bc2eb66436b027161ea488947b20821e294afd360279d292be1227f6318324e"
+  },
+  {
+   "title": "List of Power Moons in the Cascade Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Cascade Kingdom"
+   ],
+   "pageid": 238225,
+   "revid": 2361713,
+   "timestamp": "2017-12-23T14:51:14Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Cascade_Kingdom",
+   "file": "pages/238225.json",
+   "sha256": "d33e46fcf2cbdb14f54ffcb7ea281dd2bd1a7a4841c3f96c88874c1728748c3a"
+  },
+  {
+   "title": "List of Power Moons in the Cap Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Cap Kingdom"
+   ],
+   "pageid": 238233,
+   "revid": 2358850,
+   "timestamp": "2017-12-19T20:56:17Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Cap_Kingdom",
+   "file": "pages/238233.json",
+   "sha256": "0555885c2d8f2140e466c6fe1960c943306e2d6cacf7a9206dab5b6c4b590f12"
+  },
+  {
+   "title": "Scarecrow",
+   "requested_titles": [
+    "Scarecrow"
+   ],
+   "pageid": 238243,
+   "revid": 2327836,
+   "timestamp": "2017-11-03T05:06:47Z",
+   "url": "https://www.mariowiki.com/Scarecrow",
+   "file": "pages/238243.json",
+   "sha256": "3a39f2b6913076a7025b9697f19b91a3b88f4b944f2f7c558352cf22ba21e75b"
+  },
+  {
+   "title": "Darker Side",
+   "requested_titles": [
+    "Darker Side"
+   ],
+   "pageid": 238244,
+   "revid": 2365508,
+   "timestamp": "2017-12-30T10:51:14Z",
+   "url": "https://www.mariowiki.com/Darker_Side",
+   "file": "pages/238244.json",
+   "sha256": "5d6ad5cc471dd74f52bf6e6a6b50089696888efb0f9a510af07c1ec09d7bf1a1"
+  },
+  {
+   "title": "List of Power Moons in the Sand Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Sand Kingdom"
+   ],
+   "pageid": 238369,
+   "revid": 2359622,
+   "timestamp": "2017-12-20T21:37:21Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Sand_Kingdom",
+   "file": "pages/238369.json",
+   "sha256": "d45af79d12d559aa83454337c4e776aeed853f097211268844b2aa817ae7f89f"
+  },
+  {
+   "title": "Moon Rock",
+   "requested_titles": [
+    "Moon Rock"
+   ],
+   "pageid": 238666,
+   "revid": 2363619,
+   "timestamp": "2017-12-26T17:20:48Z",
+   "url": "https://www.mariowiki.com/Moon_Rock",
+   "file": "pages/238666.json",
+   "sha256": "af0397c66a4ac04ff054739b31d19b7dd574a67257e21605ee09deab845dd9dd"
+  },
+  {
+   "title": "Moon Pipe",
+   "requested_titles": [
+    "Moon Pipe"
+   ],
+   "pageid": 238670,
+   "revid": 2364496,
+   "timestamp": "2017-12-28T15:55:34Z",
+   "url": "https://www.mariowiki.com/Moon_Pipe",
+   "file": "pages/238670.json",
+   "sha256": "da522cef30fe27ee0788a2e13ef6646872807261fbbf82c955ff1ec4fda03abb"
+  },
+  {
+   "title": "List of Power Moons in the Lake Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Lake Kingdom"
+   ],
+   "pageid": 238805,
+   "revid": 2358858,
+   "timestamp": "2017-12-19T20:59:31Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Lake_Kingdom",
+   "file": "pages/238805.json",
+   "sha256": "43a9765501777cd1f81c13085a35de8bcc3f7a5e4506600e6208ca59fc005b71"
+  },
+  {
+   "title": "List of Power Moons in the Wooded Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Wooded Kingdom"
+   ],
+   "pageid": 239024,
+   "revid": 2358861,
+   "timestamp": "2017-12-19T21:00:21Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Wooded_Kingdom",
+   "file": "pages/239024.json",
+   "sha256": "fec360381d29323d5ca5e15a9c031480535519b327bcd38ecfa477d936e8996c"
+  },
+  {
+   "title": "List of Power Moons in the Cloud Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Cloud Kingdom"
+   ],
+   "pageid": 239083,
+   "revid": 2358863,
+   "timestamp": "2017-12-19T21:00:43Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Cloud_Kingdom",
+   "file": "pages/239083.json",
+   "sha256": "04d2ff156904a84fcd87ec139d4078eff7d9f848a939e1247d118c8350b9aeed"
+  },
+  {
+   "title": "Mushroom Kingdom (Super Mario Odyssey)",
+   "requested_titles": [
+    "Mushroom Kingdom (Super Mario Odyssey)"
+   ],
+   "pageid": 239165,
+   "revid": 2365797,
+   "timestamp": "2017-12-30T20:48:38Z",
+   "url": "https://www.mariowiki.com/Mushroom_Kingdom_(Super_Mario_Odyssey)",
+   "file": "pages/239165.json",
+   "sha256": "a707bd7bf0bf0c875ae79d20f81d30b4b2f327af7fd72aa3c60a303337aaeb43"
+  },
+  {
+   "title": "List of Power Moons in the Lost Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Lost Kingdom"
+   ],
+   "pageid": 240166,
+   "revid": 2364820,
+   "timestamp": "2017-12-29T02:01:07Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Lost_Kingdom",
+   "file": "pages/240166.json",
+   "sha256": "2f79756dccf34d2b6db8a63fd2ebb311ccd115ec2e634d5f01b472af485830f9"
+  },
+  {
+   "title": "List of Power Moons in the Metro Kingdom",
+   "requested_titles": [
+    "List of Power Moons in the Metro Kingdom"
+   ],
+   "pageid": 240663,
+   "revid": 2358868,
+   "timestamp": "2017-12-19T21:01:48Z",
+   "url": "https://www.mariowiki.com/List_of_Power_Moons_in_the_Metro_Kingdom",
+   "file": "pages/240663.json",
+   "sha256": "ffb658ea58c3b2ca53f568010b061e8c48153be1af7f162896da16a2f832e43c"
+  },
+  {
+   "title": "Bound Bowl Grand Prix",
+   "requested_titles": [
+    "Bound Bowl Grand Prix"
+   ],
+   "pageid": 241265,
+   "revid": 2355245,
+   "timestamp": "2017-12-13T02:11:20Z",
+   "url": "https://www.mariowiki.com/Bound_Bowl_Grand_Prix",
+   "file": "pages/241265.json",
+   "sha256": "5f2bde4012f9e0d93627bfaa1371dc28e538ef0534a8b81384264fb42ac107c1"
+  },
+  {
+   "title": "Hint Art",
+   "requested_titles": [
+    "Hint Art"
+   ],
+   "pageid": 241291,
+   "revid": 2355656,
+   "timestamp": "2017-12-14T04:39:45Z",
+   "url": "https://www.mariowiki.com/Hint_Art",
+   "file": "pages/241291.json",
+   "sha256": "ec1dfb41631fd43942f5e67e2d912e7e56cc327068bdb8d363f6b61f1b55b967"
+  },
+  {
+   "title": "Koopa Freerunning",
+   "requested_titles": [
+    "Koopa Freerunning"
+   ],
+   "pageid": 241325,
+   "revid": 2355247,
+   "timestamp": "2017-12-13T02:12:29Z",
+   "url": "https://www.mariowiki.com/Koopa_Freerunning",
+   "file": "pages/241325.json",
+   "sha256": "8c9f7bc60630219cda1a47be7dca61b66625bf00a5e5bada17385325dbe7eaa1"
+  },
+  {
+   "title": "Picture Match",
+   "requested_titles": [
+    "Picture Match"
+   ],
+   "pageid": 241400,
+   "revid": 2359400,
+   "timestamp": "2017-12-20T15:37:06Z",
+   "url": "https://www.mariowiki.com/Picture_Match",
+   "file": "pages/241400.json",
+   "sha256": "25fdbb880b202bc598e8c3d6999644f2ccb8a34081eebf409a6decaa0a58cb27"
+  }
+ ],
+ "missing": [
+  "Balloon World",
+  "List of outfits in Super Mario Odyssey",
+  "List of Power Moons in the Snow Kingdom",
+  "List of Power Moons in the Seaside Kingdom",
+  "List of Power Moons in the Luncheon Kingdom",
+  "List of Power Moons in the Ruined Kingdom",
+  "List of Power Moons in Bowser's Kingdom",
+  "List of Power Moons in the Moon Kingdom",
+  "List of Power Moons in the Mushroom Kingdom",
+  "List of Power Moons in the Dark Side"
+ ]
+}

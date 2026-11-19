@@ -99,6 +99,17 @@ class QueryAnalysis:
         """Pregunta original + nombres canónicos + traducciones (para BM25 y embeddings)."""
         return " ".join([self.question, *self.expansion_terms]).strip()
 
+    @property
+    def rerank_query(self) -> str:
+        """Pregunta original + solo los nombres canónicos de las entidades (para el reranker).
+
+        Las traducciones del glosario ("unlock", "outfit", "suit"…) ayudan a BM25 y a los
+        embeddings, pero al cross-encoder le diluyen la señal específica de la pregunta.
+        """
+        norm_q = normalize_alias(self.question)
+        names = [e.canonical for e in self.entities if normalize_alias(e.canonical) not in norm_q]
+        return " ".join([self.question, *dict.fromkeys(names)]).strip()
+
 
 class EntityRecognizer:
     def __init__(self, table: AliasTable) -> None:

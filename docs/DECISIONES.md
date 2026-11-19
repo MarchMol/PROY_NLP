@@ -128,3 +128,48 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Conclusión:** la mayor parte de la mejora viene de la búsqueda híbrida con alias. El reranker chico con top-10 da la mejor calidad dentro del presupuesto de latencia (≈ 2.2 s + ~2.5 s del LLM). `bge-reranker-v2-m3` sigue disponible con `RERANK_MODEL` (y `RERANK_ENABLED=false` lo apaga). Con solo 3 casos la evidencia es preliminar: la elección se confirma con el banco de 33 casos (Fase 9).
 - **Ojo:** τ depende de la escala del reranker; si se cambia de modelo, se recalibra.
 - Resultados completos en `eval/results/retrieval_demo_*.json`.
+
+### D-023 · Router por reglas, no por el LLM
+- **Qué:** `agent/router.py` clasifica la intención (`documental`, `dato_exacto`, `mixta`, `fuera_de_dominio`, `accion_critica`, `ambigua`) con patrones sobre el texto normalizado y las entidades del NER, y arma los parámetros cerrados de `query_game_data`. El LLM no elige herramientas.
+- **Por qué:** es determinista, explicable en la defensa, gratis y rápido. Además, una inyección de prompt no puede forzar otra herramienta, porque el texto nunca llega a un modelo que decida qué ejecutar. Los casos frontera tienen reglas explícitas: "¿cuántas lunas **necesito** para…?" es progresión (documental), no un conteo de tabla.
+- **Alternativa:** tool calling del LLM con `tool_choice=auto`. Agrega una llamada (~1–2 s y costo) y una superficie de ataque. Queda como mejora si el banco muestra intenciones que las reglas no cubren.
+
+### D-024 · Los datos exactos no pasan por el LLM
+- **Qué:** si la intención es `dato_exacto`, la respuesta se redacta con una plantilla (`agent/sql_answers.py`) a partir de las filas, citando `sql:<tipo>:<operación>:<n>` con la URL del artículo de origen. En consultas `mixta` el resultado SQL entra como un fragmento más de la evidencia y el generador lo cita como cualquier chunk.
+- **Por qué:** la cifra sale tal cual de la tabla (el LLM no puede redondear ni mezclar reinos) y cuesta 0 tokens. El conteo de lunas reporta **las dos cifras** de D-016: el total del infobox (Multi Moon = 3) y las entradas de la lista.
+- **Alternativa:** pasar las filas al LLM para que redacte. Respuestas más naturales, pero con riesgo de alterar la cifra.
+
+### D-025 · Guardrails de salida: verificación de soporte por "anclas"
+- **Qué:** además de descartar citas a ids no recuperados (D-017) y borrar sus marcas del texto, `agent/output_guard.py` extrae de la respuesta cifras y nombres propios (entre paréntesis o comillas; casi siempre el nombre original en inglés) y verifica que aparezcan en los fragmentos citados. Si menos de la mitad están respaldados, la respuesta se reemplaza por una abstención segura. Si falta alguno, se marca `needs_human_review`. También bloquea fugas: tramos de 7 palabras del prompt del sistema, marcadores `CANARIO-*` para jugadores y patrones de credenciales.
+- **Por qué:** comparar texto en español contra chunks en inglés por solapamiento léxico no sirve. Las cifras y los nombres propios sí son verificables y son justo lo que más se alucina. Es determinista y no cuesta tokens. La fidelidad fina se mide con el juez LLM en el benchmark.
+- **Limitación:** no detecta una afirmación falsa sin cifras ni nombres. Por eso existe la métrica de fidelidad con juez.
+
+### D-026 · Herramientas: lista blanca por rol, presupuesto, timeout y SQLite de solo lectura
+- **Qué:** `ToolBudget` aplica la lista blanca del rol de la sesión y el máximo de `MAX_TOOL_CALLS` (3) por consulta. Cada herramienta corre con `TOOL_TIMEOUT_S`; si vence, se trata como servicio no disponible y se responde de forma segura. `query_game_data` abre la base con `mode=ro` + `PRAGMA query_only`, tiene un handler de progreso que corta a los `SQL_TIMEOUT_S` (2 s) y devuelve como máximo `SQL_MAX_ROWS` (50) filas (avisa cuando trunca). Además escapa los comodines `%`/`_` del nombre buscado y valida el reino contra la tabla `kingdom`.
+- **`reindex_corpus`:** no está en ninguna lista blanca. Solo existe como CLI (`python -m marioqa.tools.reindex --version X --confirm`), que además pide **teclear la versión**. Construye todo en `data/reindex_work/<ts>/`, verifica el SHA-256 de cada chunk contra el índice vectorial y solo entonces reemplaza los índices vivos, dejando un respaldo. La acción queda registrada en la auditoría.
+
+### D-027 · Grafo LangGraph y degradación controlada
+- **Qué:** nodos `guard_input → analyze → {refuse | sql | search} → permissions → gate → {sql_answer | generate} → validate`, con el estado compartido de la consulta. La evidencia (chunks + filas SQL) pasa por `validate_evidence` justo antes del generador. La compuerta compara el puntaje máximo del reranker con τ; las filas SQL no vacías cuentan como evidencia suficiente. Si el LLM falla, la respuesta lista los fragmentos con sus fuentes (`abstained=true`, `needs_human_review=true`). Si la salida no cumple el esquema, se reintenta una vez.
+- **Ambigüedad:** sin entidad concreta y con referencias vagas ("determinada zona", "esa parte") o con 3 palabras o menos, el agente pide aclaración y marca `needs_human_review` **sin** buscar, para no gastar recuperación ni tokens en adivinar.
+
+### D-028 · Auditoría JSONL con enmascarado total
+- **Qué:** `logs/audit.jsonl` guarda una línea por consulta: pregunta, intención, motivos, entidades, filtros, llamadas a herramientas, top-10 candidatos con puntajes por rama, evidencia, τ, incidencias, contexto (primeros 500 caracteres de cada fragmento), salida, tokens, costo y tiempos. **Cada** string pasa por `mask_pii` antes de escribirse, no solo la pregunta. Solo se lee con rol admin (`AuditLog.read` y `GET /audit`).
+
+### D-029 · API: rol desde una cookie firmada; token de admin por `.env`
+- **Qué:** `POST /login {token}` compara (en tiempo constante) contra `ADMIN_TOKEN` y emite la cookie `marioqa_session = rol.expira.HMAC` (`httponly`, `samesite=strict`). Sin cookie válida, el rol es `jugador`. El cuerpo de `/ask` tiene `extra="forbid"`: mandar `"role"` es un 422. Una consulta a la vez (lock), suficiente para "uso individual o de pocos usuarios".
+- **UI:** un solo HTML estático sin dependencias (`api/static/index.html`). Todo el texto que viene del modelo o de la wiki se inserta con `textContent`, nunca como HTML, así que un fragmento envenenado no puede inyectar scripts.
+- **Alternativa:** OAuth o usuarios en base de datos. Fuera de alcance para la demostración.
+
+### D-030 · Banco de 33 casos y casos de versión
+- **Qué:** `eval/bench.jsonl` sigue la composición del anteproyecto (20 RAG, 5 de herramientas, 8 de seguridad) con campos extra en `BenchCase`: `group`, `simulate` (`search_down`/`llm_down`/`poison`), `expect_abstain`, `expect_human_review`, `must_not_contain`, `must_contain_any`, `false_premise` y `version_check`. `eval/security.jsonl` contiene los 8 casos de seguridad para correr la suite sola.
+- **Casos de versión:** el índice tiene `20261119` (activa) y `20180101-asof` (deprecated, 73 artículos y 533 chunks; los 10 artículos que faltan no existían en esa fecha). Los casos verifican que toda la evidencia de un jugador sea de la versión activa. Un admin puede fijar `version` y ver la foto vieja: Balloon World da abstención en 2018 y respuesta en la versión actual. El primer intento de descarga falló por una red con proxy que interceptaba TLS; desde otra red funcionó sin tocar la verificación.
+- **Juez:** `LLM_JUDGE_MODEL` (vacío = `LLM_MODEL`). Que Haiku se juzgue a sí mismo es una limitación: conviene repetir la medición con un juez más capaz (p. ej. `claude-sonnet-5-5`) y revisar a mano una muestra.
+
+### D-031 · Entorno local con Python 3.12
+- **Qué:** en una máquina sin 3.11 se creó `.venv` con 3.12 y `pip install -e . --ignore-requires-python`. Todo `requirements-lock.txt` resolvió y la suite pasa. El pin del repo (D-001) **no** se cambió.
+
+### D-032 · El reranker recibe la pregunta + entidades, no la consulta expandida
+- **Qué:** BM25 y los embeddings siguen usando `expanded_query` (pregunta + nombres canónicos + glosario). El cross-encoder recibe `rerank_query`: la pregunta original más solo los nombres canónicos de las entidades detectadas.
+- **Por qué:** las traducciones genéricas del glosario («unlock», «outfit», «suit»…) ayudan a la búsqueda léxica y vectorial, pero al reranker le diluían la señal específica de la pregunta. Ejemplo: «¿Cómo desbloqueo el traje de Mario Maker?» tenía el fragmento correcto 1.º en la fusión y el reranker lo bajaba al 8.º. Medición sobre el banco: R@5 0.94 → **1.00**, MRR 0.86 → **0.95**, abstenciones indebidas 6 % → **0 %**.
+- **Efecto secundario:** los puntajes del reranker bajan (consultas más cortas; ~0.4–0.5 en atuendos frente a ~0.9 antes), más cerca de τ = 0.30. Hay que recalibrar τ con este cambio.
+- **Ajustes relacionados:** (1) el router ya no rechaza como fuera de dominio una pregunta que nombra otro juego si trae vocabulario de Odyssey (skin, traje, gorra, reino…), porque hay atuendos que referencian otros juegos (Mario 64, Mario Maker); (2) el detector de fugas ignora los ejemplos entre comillas o corchetes del prompt del sistema: la frase de ejemplo «Detrás de la cascada (Behind the Waterfall)» es una respuesta válida y daba un falso positivo.

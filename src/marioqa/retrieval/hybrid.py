@@ -130,8 +130,9 @@ class HybridRetriever:
         if self.reranker is not None and ordered:
             head, tail = ordered[: s.rerank_top_n], ordered[s.rerank_top_n :]
             t = time.perf_counter()
+            rerank_q = analysis.rerank_query if analysis else question
             for c, score in zip(
-                head, self.reranker.score(query, [c.chunk.text for c in head]), strict=True
+                head, self.reranker.score(rerank_q, [c.chunk.text for c in head]), strict=True
             ):
                 c.rerank = score
             res.timings["rerank"] = time.perf_counter() - t

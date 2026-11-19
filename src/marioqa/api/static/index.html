@@ -4,135 +4,239 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mario Odyssey RAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet">
 <style>
   :root {
-    --bg: #f6f5f2; --panel: #ffffff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e3e1db;
-    --accent: #d62718; --accent-ink: #ffffff; --ok: #1f7a4d; --warn-bg: #fff4d6; --warn: #8a5a00;
-    --abst-bg: #fde8e6; --abst: #a3231a; --code: #f0eee9; --chip: #efede8;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141416; --panel: #1d1d20; --ink: #ececef; --muted: #9a9aa2; --line: #2e2e33;
-      --accent: #ff5a4a; --accent-ink: #141416; --ok: #5fd39a; --warn-bg: #3a2f12; --warn: #f2c86b;
-      --abst-bg: #3a1c1a; --abst: #ff9c92; --code: #26262a; --chip: #26262a;
-    }
+    --red: #c8102e;        /* rojo principal: texto blanco encima (contraste 5.9:1) */
+    --red-dark: #9e0c24;
+    --red-soft: #fbe9ec;   /* solo para bordes y sombras, nunca de fondo con texto */
+    --white: #ffffff;
+    --bg: #ffffff;
+    --ink: #2b2b2b;        /* gris oscuro: texto sobre blanco */
+    --muted: #5f5f66;
+    --line: #e7e3e3;
+    --gold: #f2b705;
+    --shadow: 0 2px 10px rgba(30, 10, 10, .07);
+    --radius: 18px;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink);
-         font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  header { display: flex; align-items: center; justify-content: space-between; gap: 12px;
-           padding: 14px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
-  header h1 { font-size: 17px; margin: 0; }
-  header h1 span { color: var(--accent); }
-  .role { font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: center;
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.55 "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; height: 100dvh;
+  }
+  a { color: var(--red); font-weight: 700; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---------------------------------------------------------------- header */
+  header {
+    background: var(--red); color: var(--white);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 18px; box-shadow: 0 2px 0 var(--red-dark);
+    position: relative; z-index: 2;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand h1 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: .01em; }
+  .brand small { display: block; font-size: 12px; font-weight: 600; opacity: .9; }
+  .emblem {
+    width: 38px; height: 38px; border-radius: 50%; background: var(--white);
+    display: grid; place-items: center; flex: none; box-shadow: inset 0 -3px 0 #e9e9e9;
+  }
+  .session { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+             justify-content: flex-end; }
+  .pill {
+    border: 2px solid var(--white); color: var(--white); background: transparent;
+    border-radius: 999px; padding: 3px 12px; font: inherit; font-size: 13px; font-weight: 700;
+  }
+  .pill.solid { background: var(--white); color: var(--red); }
+  button.pill { cursor: pointer; }
+  button.pill:hover { background: rgba(255, 255, 255, .15); }
+  button.pill.solid:hover { background: #f3f3f3; }
+  #login-form { display: none; gap: 6px; align-items: center; }
+  #login-form.open { display: flex; }
+  #token {
+    font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 999px; width: 150px;
+    border: 2px solid var(--white); background: var(--white); color: var(--ink);
+  }
+
+  /* ----------------------------------------------------------------- chat */
+  #chat { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
+  .column { max-width: 780px; margin: 0 auto; padding: 24px 16px 12px; }
+
+  .welcome { text-align: center; padding: 6vh 8px 8px; }
+  .welcome .moon { margin: 0 auto 10px; width: 64px; height: 64px; }
+  .welcome h2 { margin: 0 0 6px; font-size: 26px; font-weight: 800; color: var(--ink); }
+  .welcome p { margin: 0 auto 18px; max-width: 520px; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chip {
+    font: inherit; font-size: 14px; color: var(--ink); background: var(--white);
+    border: 2px solid var(--red); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+  }
+  .chip:hover { background: var(--red); color: var(--white); }
+
+  .msg { display: flex; margin: 14px 0; gap: 10px; }
+  .msg.user { justify-content: flex-end; }
+  .bubble-user {
+    background: var(--red); color: var(--white); font-weight: 600;
+    padding: 10px 16px; border-radius: var(--radius) var(--radius) 4px var(--radius);
+    max-width: 78%; white-space: pre-wrap; overflow-wrap: anywhere;
+    box-shadow: 0 2px 0 var(--red-dark);
+  }
+  .avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--red); flex: none;
+    display: grid; place-items: center; margin-top: 2px; box-shadow: 0 2px 0 var(--red-dark);
+  }
+  .card {
+    background: var(--white); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 4px var(--radius) var(--radius) var(--radius); box-shadow: var(--shadow);
+    padding: 14px 16px; max-width: calc(100% - 44px); min-width: 0; flex: 1;
+  }
+  .answer { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .flags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .flag {
+    font-size: 13px; font-weight: 700; border-radius: 999px; padding: 3px 12px;
+  }
+  .flag.abst { background: var(--red); color: var(--white); }
+  .flag.review { background: var(--white); color: var(--ink); border: 2px solid var(--red); }
+  .flag.error { background: var(--red); color: var(--white); }
+
+  .label { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+           color: var(--muted); margin: 14px 0 6px; }
+  .sources { display: flex; flex-wrap: wrap; gap: 6px; }
+  .source {
+    display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+    background: var(--white); color: var(--ink); border: 1px solid var(--line);
+    border-left: 4px solid var(--red); border-radius: 8px; padding: 4px 10px; font-size: 13px;
+  }
+  .source a { color: var(--ink); font-weight: 700; overflow-wrap: anywhere; }
+  .source code { color: var(--muted); font-size: 11px; }
+  .meta { margin-top: 12px; font-size: 12px; color: var(--muted); display: flex; gap: 12px;
           flex-wrap: wrap; }
-  .badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px;
-           background: var(--chip); color: var(--ink); }
-  .badge.admin { background: var(--accent); color: var(--accent-ink); }
-  main { max-width: 900px; margin: 0 auto; padding: 18px 16px 48px; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
-          padding: 16px; margin-bottom: 14px; }
-  textarea { width: 100%; min-height: 72px; resize: vertical; padding: 10px 12px; font: inherit;
-             color: var(--ink); background: var(--bg); border: 1px solid var(--line);
-             border-radius: 8px; }
-  .row { display: flex; gap: 10px; align-items: center; justify-content: space-between;
-         margin-top: 8px; flex-wrap: wrap; }
-  button { font: inherit; border: 0; border-radius: 8px; padding: 8px 16px; cursor: pointer;
-           background: var(--accent); color: var(--accent-ink); font-weight: 600; }
-  button.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line);
-                 font-weight: 400; padding: 4px 10px; font-size: 13px; }
-  button:disabled { opacity: .55; cursor: progress; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-  .chip { background: var(--chip); color: var(--ink); border: 0; font-weight: 400;
-          font-size: 13px; padding: 4px 10px; border-radius: 999px; }
-  .counter { color: var(--muted); font-size: 12px; }
-  .banner { border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; font-size: 14px; }
-  .banner.abst { background: var(--abst-bg); color: var(--abst); }
-  .banner.review { background: var(--warn-bg); color: var(--warn); }
-  .answer { white-space: pre-wrap; }
-  .meta { color: var(--muted); font-size: 13px; margin-top: 8px; }
-  h2 { font-size: 14px; margin: 14px 0 6px; color: var(--muted); font-weight: 600;
-       text-transform: uppercase; letter-spacing: .04em; }
-  ol.sources { margin: 0; padding-left: 20px; }
-  ol.sources li { margin: 2px 0; }
-  code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
-  details { margin-top: 10px; }
-  summary { cursor: pointer; color: var(--muted); }
-  .scroll { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; }
-  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line);
-           white-space: nowrap; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-  dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0;
+  .meta b { color: var(--ink); }
+
+  details.trace { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 8px; }
+  details.trace summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--red); }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 3px 12px; margin: 10px 0 0;
        font-size: 13px; }
   dt { color: var(--muted); }
-  dd { margin: 0; overflow-wrap: anywhere; }
-  .err { color: var(--abst); }
-  .hidden { display: none; }
-  input[type=password] { font: inherit; padding: 4px 8px; border: 1px solid var(--line);
-                         border-radius: 6px; background: var(--bg); color: var(--ink);
-                         width: 140px; }
-  pre { background: var(--code); padding: 8px; border-radius: 6px; overflow-x: auto;
-        font-size: 12px; max-height: 360px; }
-  footer { color: var(--muted); font-size: 12px; text-align: center; padding: 0 16px 24px; }
+  dd { margin: 0; overflow-wrap: anywhere; color: var(--ink); }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 4px; }
+  th { text-align: left; background: var(--red); color: var(--white); padding: 4px 8px;
+       white-space: nowrap; font-weight: 700; }
+  th:first-child { border-radius: 6px 0 0 0; } th:last-child { border-radius: 0 6px 0 0; }
+  td { padding: 4px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  pre.audit { background: var(--white); border: 1px solid var(--line); border-radius: 8px;
+              padding: 10px; font-size: 12px; max-height: 360px; overflow: auto; margin: 0; }
+
+  .typing { display: inline-flex; gap: 5px; padding: 4px 0; }
+  .typing span { width: 8px; height: 8px; border-radius: 50%; background: var(--red);
+                 animation: hop 1s infinite ease-in-out; }
+  .typing span:nth-child(2) { animation-delay: .15s; }
+  .typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes hop { 0%, 80%, 100% { transform: translateY(0); opacity: .5; }
+                   40% { transform: translateY(-6px); opacity: 1; } }
+
+  /* --------------------------------------------------------------- input */
+  footer { border-top: 1px solid var(--line); background: var(--white); }
+  .composer { max-width: 780px; margin: 0 auto; padding: 12px 16px 6px; }
+  .box {
+    display: flex; align-items: flex-end; gap: 8px; background: var(--white);
+    border: 2px solid var(--red); border-radius: 26px; padding: 6px 6px 6px 18px;
+    box-shadow: var(--shadow);
+  }
+  #q {
+    flex: 1; border: 0; outline: 0; resize: none; font: inherit; color: var(--ink);
+    background: transparent; max-height: 140px; padding: 8px 0; line-height: 1.4;
+  }
+  #q::placeholder { color: var(--muted); }
+  #send {
+    width: 42px; height: 42px; border-radius: 50%; border: 0; cursor: pointer; flex: none;
+    background: var(--red); color: var(--white); display: grid; place-items: center;
+    box-shadow: 0 2px 0 var(--red-dark);
+  }
+  #send:hover { background: var(--red-dark); }
+  #send:disabled { opacity: .5; cursor: progress; }
+  .hint { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+          font-size: 12px; color: var(--muted); padding: 6px 6px 8px; }
+  #version-box { display: none; align-items: center; gap: 6px; }
+  #version-box.on { display: inline-flex; }
+  #version { font: inherit; font-size: 12px; width: 120px; padding: 1px 8px; color: var(--ink);
+             border: 1px solid var(--line); border-radius: 999px; }
+  .hidden { display: none !important; }
+
+  @media (max-width: 560px) {
+    .brand small { display: none; }
+    .bubble-user { max-width: 88%; }
+    #token { width: 120px; }
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1><span>●</span> Mario Odyssey RAG</h1>
-  <div class="role">
-    Rol: <span id="role" class="badge">jugador</span>
-    <form id="login" class="role">
+  <div class="brand">
+    <div class="emblem" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#c8102e"
+        d="M15.5 2.5a9.5 9.5 0 1 0 6 16.9A8 8 0 0 1 15.5 2.5Z"/><circle cx="9" cy="10" r="1.3"
+        fill="#fff"/><circle cx="12.5" cy="10" r="1.3" fill="#fff"/></svg>
+    </div>
+    <div>
+      <h1>Mario Odyssey RAG</h1>
+      <small>Respuestas citadas de la Super Mario Wiki</small>
+    </div>
+  </div>
+  <div class="session">
+    <span id="role" class="pill">jugador</span>
+    <button id="login-toggle" class="pill" type="button">Admin</button>
+    <form id="login-form">
       <input id="token" type="password" placeholder="token admin" autocomplete="off">
-      <button class="ghost" type="submit">Entrar</button>
+      <button class="pill solid" type="submit">Entrar</button>
     </form>
-    <button id="logout" class="ghost hidden" type="button">Salir</button>
+    <button id="audit-btn" class="pill solid hidden" type="button">Auditoría</button>
+    <button id="logout" class="pill hidden" type="button">Salir</button>
   </div>
 </header>
 
-<main>
-  <section class="card">
-    <form id="ask">
-      <textarea id="q" maxlength="300" placeholder="Pregunta sobre Super Mario Odyssey…"
-                required></textarea>
-      <div class="row">
-        <span class="counter"><span id="count">0</span>/300</span>
-        <span id="version-box" class="hidden counter">
-          versión <input id="version" type="text" placeholder="activa" size="10">
-        </span>
-        <button id="send" type="submit">Preguntar</button>
-      </div>
-    </form>
-    <div class="chips" id="chips"></div>
-  </section>
-
-  <section id="result" class="card hidden" aria-live="polite">
-    <div id="banners"></div>
-    <div id="answer" class="answer"></div>
-    <div id="meta" class="meta"></div>
-    <h2>Fuentes</h2>
-    <ol id="sources" class="sources"></ol>
-    <details id="trace-box">
-      <summary>Trazabilidad</summary>
-      <dl id="trace"></dl>
-      <h2>Herramientas</h2>
-      <div class="scroll"><table id="tools"></table></div>
-      <h2>Candidatos (top-10 tras fusión y rerank)</h2>
-      <div class="scroll"><table id="cands"></table></div>
-    </details>
-  </section>
-
-  <section id="audit-card" class="card hidden">
-    <div class="row" style="margin-top:0">
-      <strong>Auditoría (solo admin)</strong>
-      <button id="audit-btn" class="ghost" type="button">Cargar últimas 10</button>
-    </div>
-    <pre id="audit" class="hidden"></pre>
-  </section>
+<main id="chat" aria-live="polite">
+  <div class="column" id="thread">
+    <section class="welcome" id="welcome">
+      <svg class="moon" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="#c8102e"/>
+        <path fill="#f2b705" d="M38 14a18 18 0 1 0 12 31.5A15 15 0 0 1 38 14Z"/>
+        <circle cx="27" cy="30" r="2.6" fill="#2b2b2b"/><circle cx="34" cy="30" r="2.6"
+          fill="#2b2b2b"/>
+      </svg>
+      <h2>¿En qué te ayudo, jugador?</h2>
+      <p>Pregunta sobre Power Moons, atuendos, tiendas, jefes o cómo avanzar. Cada respuesta
+         enlaza a su fuente en la wiki.</p>
+      <div class="chips" id="chips"></div>
+    </section>
+  </div>
 </main>
+
 <footer>
-  Contenido de la <a href="https://www.mariowiki.com" target="_blank" rel="noopener">Super Mario
-  Wiki</a> bajo CC BY-SA. Proyecto académico sin afiliación con Nintendo.
+  <form class="composer" id="ask">
+    <div class="box">
+      <textarea id="q" rows="1" maxlength="300"
+                placeholder="Escribe tu pregunta sobre Super Mario Odyssey…"></textarea>
+      <button id="send" type="submit" aria-label="Enviar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff"
+             stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
+    <div class="hint">
+      <span>Enter para enviar · Shift+Enter para salto de línea · <span id="count">0</span>/300</span>
+      <span id="version-box">versión <input id="version" type="text" placeholder="activa"></span>
+      <span>Contenido CC BY-SA de la
+        <a href="https://www.mariowiki.com" target="_blank" rel="noopener">Super Mario Wiki</a>
+        · sin afiliación con Nintendo</span>
+    </div>
+  </form>
 </footer>
 
 <script>
@@ -141,86 +245,121 @@ const DEMOS = [
   "¿Cómo consigo la Power Moon que está detrás de la cascada?",
   "¿Dónde puedo comprar el atuendo de samurái?",
   "Estoy atascado en el Reino de las Arenas, ¿cómo continúo?",
-  "¿Qué necesito para desbloquear determinada zona?",
   "¿Cuántas lunas hay en el Reino de las Arenas?",
+  "¿Qué necesito para desbloquear determinada zona?",
 ];
 let role = "jugador";
+let busy = false;
 
+// Todo texto del modelo o de la wiki entra con textContent: nunca como HTML.
 function el(tag, text, cls) {
   const n = document.createElement(tag);
   if (text !== undefined && text !== null) n.textContent = String(text);
   if (cls) n.className = cls;
   return n;
 }
-function fmt(x) { return typeof x === "number" ? x.toFixed(3) : (x ?? "—"); }
+const fmt = (x) => (typeof x === "number" ? x.toFixed(3) : (x ?? "—"));
+
+function scrollDown() { const c = $("chat"); c.scrollTop = c.scrollHeight; }
 
 function setRole(r) {
   role = r;
   $("role").textContent = r;
-  $("role").className = "badge" + (r === "admin" ? " admin" : "");
-  $("login").classList.toggle("hidden", r === "admin");
+  $("role").className = "pill" + (r === "admin" ? " solid" : "");
+  $("login-toggle").classList.toggle("hidden", r === "admin");
+  $("login-form").classList.remove("open");
   $("logout").classList.toggle("hidden", r !== "admin");
-  $("audit-card").classList.toggle("hidden", r !== "admin");
-  $("version-box").classList.toggle("hidden", r !== "admin");
+  $("audit-btn").classList.toggle("hidden", r !== "admin");
+  $("version-box").classList.toggle("on", r === "admin");
 }
 
 async function api(path, opts = {}) {
   const res = await fetch(path, {
-    credentials: "same-origin",
-    headers: { "Content-Type": "application/json" },
-    ...opts,
+    credentials: "same-origin", headers: { "Content-Type": "application/json" }, ...opts,
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.detail ? JSON.stringify(body.detail) : res.statusText);
+  if (!res.ok) throw new Error(typeof body.detail === "string" ? body.detail : res.statusText);
   return body;
 }
 
-function renderTable(table, headers, rows) {
-  table.replaceChildren();
+function addUser(text) {
+  $("welcome")?.remove();
+  const row = el("div", null, "msg user");
+  row.appendChild(el("div", text, "bubble-user"));
+  $("thread").appendChild(row);
+  scrollDown();
+}
+
+function addBot() {
+  const row = el("div", null, "msg bot");
+  const av = el("div", null, "avatar");
+  av.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" ' +
+    'd="M15.5 2.5a9.5 9.5 0 1 0 6 16.9A8 8 0 0 1 15.5 2.5Z"/></svg>';
+  const card = el("div", null, "card");
+  const typing = el("div", null, "typing");
+  typing.append(el("span"), el("span"), el("span"));
+  card.appendChild(typing);
+  row.append(av, card);
+  $("thread").appendChild(row);
+  scrollDown();
+  return card;
+}
+
+function table(headers, rows) {
+  const t = el("table");
   const tr = el("tr");
   headers.forEach(([h, num]) => tr.appendChild(el("th", h, num ? "num" : "")));
-  table.appendChild(tr);
+  t.appendChild(tr);
   rows.forEach((r) => {
     const row = el("tr");
     r.forEach((v, i) => row.appendChild(el("td", v, headers[i][1] ? "num" : "")));
-    table.appendChild(row);
+    t.appendChild(row);
   });
+  const wrap = el("div", null, "scroll");
+  wrap.appendChild(t);
+  return wrap;
 }
 
-function render(data) {
+function renderAnswer(card, data) {
   const o = data.output, t = data.trace;
-  $("result").classList.remove("hidden");
-  const banners = $("banners");
-  banners.replaceChildren();
-  if (o.abstained) banners.appendChild(el("div",
-    "El sistema se abstuvo: no hay evidencia suficiente o la consulta no se puede atender.",
-    "banner abst"));
-  if (o.needs_human_review) banners.appendChild(el("div",
-    "Requiere revisión humana (ambigüedad, soporte parcial o falla de un servicio).",
-    "banner review"));
-  $("answer").textContent = o.answer;
-  $("meta").textContent =
-    `herramienta: ${o.tool_used ?? "ninguna"} · ${data.latency_s.toFixed(2)} s · ` +
-    `${data.tokens.input}+${data.tokens.output} tokens · $${data.cost_usd.toFixed(5)}`;
+  card.replaceChildren();
 
-  const src = $("sources");
-  src.replaceChildren();
-  if (!o.sources.length) src.appendChild(el("li", "Sin fuentes."));
-  o.sources.forEach((s) => {
-    const li = el("li");
-    const a = el("a", `${s.source} › ${s.page}`);
-    if (/^https:\/\//.test(s.url)) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
-    li.append(a, " ", el("code", s.chunk_id));
-    src.appendChild(li);
-  });
+  const flags = el("div", null, "flags");
+  if (o.abstained) flags.appendChild(el("span", "Sin evidencia suficiente: me abstengo", "flag abst"));
+  if (o.needs_human_review) flags.appendChild(el("span", "Requiere revisión humana", "flag review"));
+  if (flags.childElementCount) card.appendChild(flags);
 
-  const dl = $("trace");
-  dl.replaceChildren();
+  card.appendChild(el("div", o.answer, "answer"));
+
+  if (o.sources.length) {
+    card.appendChild(el("div", "Fuentes", "label"));
+    const list = el("div", null, "sources");
+    o.sources.forEach((s) => {
+      const chip = el("span", null, "source");
+      const a = el("a", `${s.source} › ${s.page}`);
+      if (/^https:\/\//.test(s.url)) { a.href = s.url; a.target = "_blank"; a.rel = "noopener"; }
+      chip.append(a, el("code", s.chunk_id));
+      list.appendChild(chip);
+    });
+    card.appendChild(list);
+  }
+
+  const meta = el("div", null, "meta");
+  const item = (k, v) => { const s = el("span", `${k} `); s.appendChild(el("b", v)); return s; };
+  meta.append(
+    item("herramienta", o.tool_used ?? "ninguna"),
+    item("tiempo", `${data.latency_s.toFixed(2)} s`),
+    item("tokens", `${data.tokens.input}+${data.tokens.output}`),
+    item("costo", `$${data.cost_usd.toFixed(5)}`),
+  );
+  card.appendChild(meta);
+
+  const det = el("details", null, "trace");
+  det.appendChild(el("summary", "Ver trazabilidad"));
+  const dl = el("dl");
   const ents = (t.entities || []).map((e) => `${e.canonical} (${e.type})`).join(", ");
   [
-    ["request_id", data.request_id],
-    ["rol (sesión)", data.role],
-    ["intención", t.intent ?? (t.input && !t.input.ok ? "rechazada en entrada" : "—")],
+    ["intención", t.intent ?? (t.input && !t.input.ok ? "rechazada en la entrada" : "—")],
     ["motivo", (t.route_reasons || []).join("; ") || (t.input && t.input.reason) || "—"],
     ["entidades", ents || "—"],
     ["consulta expandida", t.expanded_query ?? "—"],
@@ -228,61 +367,99 @@ function render(data) {
     ["compuerta τ", `máx ${fmt(t.max_score)} vs τ ${t.tau} → ${t.gate_passed ?? "—"}`],
     ["denegados (2.ª validación)", (t.denied || []).length],
     ["incidencias", [...(t.issues || []), ...(t.errors || [])].join("; ") || "ninguna"],
-  ].forEach(([k, v]) => { dl.append(el("dt", k), el("dd", v)); });
-
-  renderTable($("tools"), [["herramienta"], ["ok"], ["parámetros"], ["s", true]],
-    (t.tool_calls || []).map((c) => [c.tool, c.ok ? "sí" : `no: ${c.error}`,
-      JSON.stringify(c.params), fmt(c.latency_s)]));
-  renderTable($("cands"),
-    [["fuente › sección"], ["denso", true], ["BM25", true], ["fusión", true], ["rerank", true]],
-    (t.candidates || []).map((c) => [`${c.source} › ${c.page}`, fmt(c.dense), fmt(c.lexical),
-      fmt(c.fused), fmt(c.rerank)]));
+    ["request_id", data.request_id],
+  ].forEach(([k, v]) => dl.append(el("dt", k), el("dd", v)));
+  det.appendChild(dl);
+  if ((t.tool_calls || []).length) {
+    det.appendChild(el("div", "Herramientas", "label"));
+    det.appendChild(table([["herramienta"], ["ok"], ["parámetros"], ["s", true]],
+      t.tool_calls.map((c) => [c.tool, c.ok ? "sí" : `no: ${c.error}`,
+        JSON.stringify(c.params), fmt(c.latency_s)])));
+  }
+  if ((t.candidates || []).length) {
+    det.appendChild(el("div", "Candidatos (fusión + rerank)", "label"));
+    det.appendChild(table(
+      [["fuente › sección"], ["denso", true], ["BM25", true], ["fusión", true], ["rerank", true]],
+      t.candidates.map((c) => [`${c.source} › ${c.page}`, fmt(c.dense), fmt(c.lexical),
+        fmt(c.fused), fmt(c.rerank)])));
+  }
+  card.appendChild(det);
+  scrollDown();
 }
 
-$("q").addEventListener("input", () => { $("count").textContent = $("q").value.length; });
-DEMOS.forEach((d) => {
-  const b = el("button", d, "chip");
-  b.type = "button";
-  b.onclick = () => { $("q").value = d; $("count").textContent = d.length; $("ask").requestSubmit(); };
-  $("chips").appendChild(b);
-});
+function renderError(card, message) {
+  card.replaceChildren();
+  const flags = el("div", null, "flags");
+  flags.appendChild(el("span", "Error", "flag error"));
+  card.append(flags, el("div", message, "answer"));
+  scrollDown();
+}
 
-$("ask").addEventListener("submit", async (ev) => {
-  ev.preventDefault();
-  const question = $("q").value.trim();
-  if (!question) return;
-  $("send").disabled = true; $("send").textContent = "Buscando…";
+async function ask(question) {
+  if (busy || !question.trim()) return;
+  busy = true; $("send").disabled = true;
+  addUser(question);
+  const card = addBot();
   try {
     const body = { question };
     const v = $("version").value.trim();
     if (role === "admin" && v) body.version = v;
-    render(await api("/ask", { method: "POST", body: JSON.stringify(body) }));
+    renderAnswer(card, await api("/ask", { method: "POST", body: JSON.stringify(body) }));
   } catch (e) {
-    $("result").classList.remove("hidden");
-    $("banners").replaceChildren(el("div", `Error: ${e.message}`, "banner abst"));
-    $("answer").textContent = ""; $("sources").replaceChildren(); $("meta").textContent = "";
+    renderError(card, e.message);
   } finally {
-    $("send").disabled = false; $("send").textContent = "Preguntar";
+    busy = false; $("send").disabled = false; $("q").focus();
   }
+}
+
+// ---------------------------------------------------------------- input
+const q = $("q");
+function autosize() { q.style.height = "auto"; q.style.height = `${q.scrollHeight}px`; }
+q.addEventListener("input", () => { $("count").textContent = q.value.length; autosize(); });
+q.addEventListener("keydown", (ev) => {
+  if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); $("ask").requestSubmit(); }
+});
+$("ask").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const text = q.value.trim();
+  if (!text) return;
+  q.value = ""; $("count").textContent = "0"; autosize();
+  ask(text);
+});
+DEMOS.forEach((d) => {
+  const b = el("button", d, "chip");
+  b.type = "button";
+  b.onclick = () => ask(d);
+  $("chips").appendChild(b);
 });
 
-$("login").addEventListener("submit", async (ev) => {
+// --------------------------------------------------------------- sesión
+$("login-toggle").onclick = () => {
+  $("login-form").classList.toggle("open");
+  if ($("login-form").classList.contains("open")) $("token").focus();
+};
+$("login-form").addEventListener("submit", async (ev) => {
   ev.preventDefault();
   try {
     const r = await api("/login", { method: "POST",
       body: JSON.stringify({ token: $("token").value }) });
     $("token").value = ""; setRole(r.role);
-  } catch (e) { alert("Token inválido"); }
+  } catch (e) { $("token").value = ""; $("token").placeholder = "token inválido"; }
 });
 $("logout").onclick = async () => { setRole((await api("/logout", { method: "POST" })).role); };
 $("audit-btn").onclick = async () => {
+  addUser("Mostrar auditoría (últimas 10 consultas)");
+  const card = addBot();
   try {
-    $("audit").textContent = JSON.stringify(await api("/audit?limit=10"), null, 1);
-  } catch (e) { $("audit").textContent = `Error: ${e.message}`; }
-  $("audit").classList.remove("hidden");
+    const records = await api("/audit?limit=10");
+    card.replaceChildren(el("div", "Auditoría · solo admin · PII enmascarada", "label"),
+                         el("pre", JSON.stringify(records, null, 1), "audit"));
+    scrollDown();
+  } catch (e) { renderError(card, e.message); }
 };
 
 api("/session").then((s) => setRole(s.role)).catch(() => setRole("jugador"));
+q.focus();
 </script>
 </body>
 </html>

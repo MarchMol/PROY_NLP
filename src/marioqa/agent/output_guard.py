@@ -46,7 +46,9 @@ def _shingles(text: str, n: int = SHINGLE) -> set[tuple[str, ...]]:
     return {tuple(toks[i : i + n]) for i in range(len(toks) - n + 1)}
 
 
-_PROMPT_SHINGLES = _shingles(SYSTEM_PROMPT)
+# Los ejemplos del prompt (entre comillas o corchetes, p. ej. "Detrás de la cascada (Behind the
+# Waterfall)") son respuestas legítimas: no cuentan como fuga si el modelo los repite.
+_PROMPT_SHINGLES = _shingles(re.sub(r"\"[^\"]*\"|\[[^\]]*\]", " ", SYSTEM_PROMPT))
 
 
 @dataclass

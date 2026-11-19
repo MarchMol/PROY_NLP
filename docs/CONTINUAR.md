@@ -10,6 +10,8 @@ cp .env.example .env       # LLM_API_KEY propia, o LLM_PROVIDER=mock (sin costo)
 python tasks.py ingest     # ~10 min la 1.ª vez (baja e5 ~1.1 GB); luego segundos
 python tasks.py test       # todo en verde, sin red ni costo
 python tasks.py demo       # 4 preguntas demo con la línea base
+python tasks.py run        # API + UI en http://127.0.0.1:8000
+python tasks.py bench      # 33 casos, línea base vs agente → eval/report.md
 ```
 
 - El snapshot de la wiki **está versionado** en `data/raw/` (D-012); no hace falta volver a descargarlo.
@@ -39,29 +41,22 @@ python tasks.py demo       # 4 preguntas demo con la línea base
 |---|---|
 | 0–5 | ✅ Setup, ingesta, chunking, índices + SQLite, línea base, guardrails + NER |
 | 6 | ✅ Híbrida + rerank + permisos (ver D-022 sobre el reranker) |
-| 7 | ⏳ Router + LangGraph + herramientas + compuerta τ + validación de salida + auditoría |
-| 8 | ⏳ FastAPI + UI |
-| 9 | ⏳ Banco de 33 casos + benchmark + reporte |
-| 10 | ⏳ Suite de seguridad |
-| 11 | ⏳ Cierre (README, informe, guion de demo) |
+| 7 | ✅ Router + LangGraph + herramientas + compuerta τ + validación de salida + auditoría (D-023…D-028) |
+| 8 | ✅ FastAPI (`/ask`, `/health`, `/login`, `/audit`) + UI con trazabilidad (D-029) |
+| 9 | ✅ Banco de 33 casos + benchmark + `eval/report.md` (D-030); snapshots `20261119` (activa) y `20180101-asof` |
+| 10 | ✅ Suite de seguridad (`python tasks.py security`, `docs/SEGURIDAD.md`) |
+| 11 | ✅ README, `docs/INFORME.md` (borrador), `docs/GUION_DEMO.md` |
 
-## 4. Pendientes, con las piezas a reutilizar
+Módulos nuevos: `agent/` (`graph`, `router`, `sql_answers`, `output_guard`, `audit`, `factory`), `tools/` (`search`, `game_data`, `reindex`, `base`), `api/` (`app`, `session`, `static/index.html`), `eval/` (`judge`, `run_bench`).
 
-**Fase 7 (grafo con estado).** Nodos: guardrails de entrada (`check_input`) → analizador (`EntityRecognizer.analyze`) + router de intención (documental / dato_exacto / fuera_de_dominio) → herramientas → permisos → compuerta de evidencia → generador (`SYSTEM_PROMPT`, `GroundedDraft`) → validación de salida → auditoría.
-- `search_documents` envuelve `HybridRetriever.search` (ya filtra por rol, versión y estado).
-- `query_game_data`: SQL de solo lectura con parámetros cerrados (`entity_type`, `kingdom`, `operation`, `name`), máximo 50 filas y 2 s. El modelo **no** escribe SQL. Ojo con D-016: el infobox cuenta los Multi Moon como 3 lunas.
-- Máximo 3 llamadas a herramientas por consulta. `reindex_corpus` es solo CLI de admin con confirmación y nunca se expone al LLM.
-- Compuerta: abstenerse si `max_score < τ`. **τ depende del reranker** (otra escala de puntajes) y se calibra en la Fase 9.
-- Citas: `draft_to_output` ya descarta ids no recuperados. Falta verificar que el fragmento contenga lo citado y que la salida no filtre el prompt.
-- Degradación: si el LLM falla, devolver los fragmentos con sus fuentes.
-- Auditoría: JSONL por consulta con PII ya enmascarada, solo lectura para admin.
+## 4. Pendientes
 
-**Fase 8.** FastAPI `/ask` y `/health`. El rol sale de la sesión, **nunca** del texto. UI con respuesta, fuentes enlazadas, banner de abstención y panel de trazabilidad.
-
-**Fase 9.** `eval/bench.jsonl` con 33 casos en el formato de `eval/cases.py` (20 de recuperación/generación, 5 de herramientas y 8 de seguridad). `run_retrieval` ya compara configuraciones. Falta: LLM-judge (fidelidad y relevancia), métricas de abstención, de herramienta y de seguridad, y `eval/report.md`.
-- Casos de versión: `python -m marioqa.ingest.download --as-of AAAA-MM-DD` + `ingest`. Hay que elegir una fecha en la que un dato realmente cambie.
-
-**Fase 10.** 8 casos adversarios (2 por vector), incluido un chunk "envenenado" para la inyección indirecta. Los docs internos (`data/internal/`) llevan canarios `CANARIO-INT-*` para detectar fugas.
+1. **Redes con proxy:** si `download` falla con `CERTIFICATE_VERIFY_FAILED`, la red está interceptando TLS. Usa otra red (p. ej. un hotspot) en lugar de desactivar la verificación.
+2. **Revisión manual** de una muestra de las puntuaciones del juez (fidelidad y relevancia) y repetir el juez con un modelo más capaz (`LLM_JUDGE_MODEL=claude-sonnet-5-5`) para reducir el sesgo de autoevaluación.
+3. **Calibrar τ** con el banco: hoy 0.30 sobre la sigmoide del reranker. Desde D-032 los puntajes son más bajos (~0.4–0.5 en algunos casos válidos), así que no subas τ sin medir. Los puntajes máximos de cada caso están en `eval/results/bench_agente.json` (traza) y en la auditoría.
+4. **Etiquetado:** una segunda persona del equipo debe revisar las fuentes esperadas de `eval/bench.jsonl` (anteproyecto §12).
+5. **Sesgo de evaluación:** las correcciones del router (consultas de equivalencia y ambigüedad sin vocabulario) y las palabras nuevas del glosario se agregaron tras la primera corrida del banco. Conviene un pequeño conjunto de validación aparte para el informe.
+6. Informe final de 10–15 páginas a partir de `docs/INFORME.md`.
 
 ## 5. Reglas de trabajo del equipo
 

@@ -82,7 +82,15 @@ DOC_QUESTION = _re(r"\b(?:como|donde|por que|porque|quien|cuando|que hago|que de
 
 MOON_WORDS = _re(r"\b(?:luna|lunas|energiluna\w*|superluna\w*|moon|moons)\b")
 OUTFIT_WORDS = _re(
-    r"\b(?:atuendo\w*|traje\w*|ropa|disfraz\w*|vestimenta\w*|outfit\w*|armadura\w*)\b"
+    r"\b(?:atuendo\w*|traje\w*|ropa|disfraz\w*|vestimenta\w*|outfit\w*|armadura\w*|skins?"
+    r"|aspecto\w*)\b"
+)
+# Pistas propias de Odyssey (no "mario" ni "juego", que comparten todos los juegos de la saga).
+# Si aparecen, nombrar otro juego no basta para rechazar: hay atuendos que lo referencian
+# (p. ej. el traje de Mario 64 o el de Mario Maker).
+ODYSSEY_HINTS = _re(
+    r"\b(?:odyssey|odisea|cappy|luna|lunas|power moons?|reino\w*|kingdom|crazy cap|tienda\w*"
+    r"|captur\w*|gorra\w*|sombrero\w*|casco\w*)\b"
 )
 SHOP_WORDS = _re(
     r"\b(?:tienda\w*|vende\w*|comprar|articulo\w*|objeto\w*|crazy cap|souvenir\w*|recuerdo\w*"
@@ -170,7 +178,12 @@ def route(question: str, analysis: QueryAnalysis) -> RouteDecision:
 
     if CRITICAL_ACTION.search(norm):
         return RouteDecision(Intent.ACCION_CRITICA, reasons=["pide una acción administrativa"])
-    if OTHER_GAMES.search(norm) and not specific:
+    if (
+        OTHER_GAMES.search(norm)
+        and not specific
+        and not OUTFIT_WORDS.search(norm)
+        and not ODYSSEY_HINTS.search(norm)
+    ):
         return RouteDecision(Intent.FUERA_DE_DOMINIO, reasons=["menciona otro videojuego"])
     if not analysis.entities and VAGUE.search(norm):
         # "¿Cómo paso esa parte?": sin referente ni vocabulario, pero es una duda de juego.
