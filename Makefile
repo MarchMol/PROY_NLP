@@ -3,7 +3,7 @@
 
 PY ?= python
 
-.PHONY: help setup test lint fmt ingest-download ingest-chunks ingest
+.PHONY: help setup test lint fmt ingest-download ingest-chunks ingest demo
 
 help:
 	@$(PY) tasks.py --list
@@ -28,3 +28,6 @@ ingest-chunks:
 
 ingest:
 	@$(PY) tasks.py ingest
+
+demo:
+	@$(PY) tasks.py demo

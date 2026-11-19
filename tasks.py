@@ -71,6 +71,11 @@ def ingest() -> int:
     return _run(PY, "-m", "marioqa.ingest.pipeline")
 
 
+def demo() -> int:
+    """Corre las 4 preguntas demo con la línea base (LLM según .env)."""
+    return _run(PY, "-m", "marioqa.eval.run_demo")
+
+
 TASKS: dict[str, Callable[[], int]] = {
     "setup": setup,
     "test": test,
@@ -79,6 +84,7 @@ TASKS: dict[str, Callable[[], int]] = {
     "ingest-download": ingest_download,
     "ingest-chunks": ingest_chunks,
     "ingest": ingest,
+    "demo": demo,
 }
 
 

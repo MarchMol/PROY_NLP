@@ -1,0 +1,304 @@
+{
+ "system": "baseline (vectorial top-5 + LLM)",
+ "llm": {
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5"
+ },
+ "collection": "smo_chunks_w300",
+ "summary": {
+  "n_cases": 4,
+  "n_labeled": 3,
+  "recall@5": 0.3333333333333333,
+  "mrr": 0.3333333333333333,
+  "precision@5": 0.19999999999999998,
+  "latency_mean_s": 2.54175,
+  "latency_p95_s": 3.6558,
+  "cost_mean_usd": 0.00047007500000000003,
+  "tokens_mean": 3596.75
+ },
+ "cases": [
+  {
+   "id": "demo-01",
+   "question": "¿Cómo consigo la Power Moon que está detrás de la cascada?",
+   "answer": {
+    "answer": "No tengo información suficiente en los fragmentos para explicar cómo conseguir la Power Moon detrás de la cascada (Behind the Waterfall). Los fragmentos disponibles describen otras Power Moons del Reino Cascada, pero ninguna situada detrás de una cascada.",
+    "sources": [],
+    "abstained": true,
+    "tool_used": "search_documents",
+    "needs_human_review": false
+   },
+   "retrieved": [
+    {
+     "chunk_id": "p238225-2473e96b-05",
+     "source": "List of Power Moons in the Cascade Kingdom",
+     "page": "Introduction",
+     "score": 0.8694,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238225-2473e96b-02",
+     "source": "List of Power Moons in the Cascade Kingdom",
+     "page": "Introduction",
+     "score": 0.8678,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238225-2473e96b-10",
+     "source": "List of Power Moons in the Cascade Kingdom",
+     "page": "Introduction",
+     "score": 0.8646,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238225-2473e96b-04",
+     "source": "List of Power Moons in the Cascade Kingdom",
+     "page": "Introduction",
+     "score": 0.8634,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238225-2473e96b-01",
+     "source": "List of Power Moons in the Cascade Kingdom",
+     "page": "Introduction",
+     "score": 0.8629,
+     "relevant": false
+    }
+   ],
+   "latency_s": 3.834,
+   "timings": {
+    "retrieval": 0.178,
+    "generation": 3.656
+   },
+   "tokens": {
+    "input": 3180,
+    "output": 385
+   },
+   "cost_usd": 0.0005105,
+   "error": null,
+   "metrics": {
+    "recall@5": 0.0,
+    "rr": 0.0,
+    "precision@5": 0.0
+   }
+  },
+  {
+   "id": "demo-02",
+   "question": "¿Dónde puedo comprar el atuendo de samurái?",
+   "answer": {
+    "answer": "El atuendo de samurái se compra a Crazy Cap en el Reino de Bowser (Bowser's Kingdom). El casco de samurái (Samurai Helmet) cuesta 5 monedas regionales de Bowser y la armadura de samurái (Samurai Armor) cuesta 10 monedas regionales de Bowser; ambos están disponibles después de llegar a Bowser's Kingdom [p355160-ffa54b67-10] [p234774-17e5f9d8-06].",
+    "sources": [
+     {
+      "source": "List of outfits in Super Mario Odyssey",
+      "page": "Outfits",
+      "chunk_id": "p355160-ffa54b67-10",
+      "url": "https://www.mariowiki.com/List_of_outfits_in_Super_Mario_Odyssey"
+     },
+     {
+      "source": "Crazy Cap",
+      "page": "List of items sold by Crazy Cap > Clothing",
+      "chunk_id": "p234774-17e5f9d8-06",
+      "url": "https://www.mariowiki.com/Crazy_Cap"
+     }
+    ],
+    "abstained": false,
+    "tool_used": "search_documents",
+    "needs_human_review": false
+   },
+   "retrieved": [
+    {
+     "chunk_id": "p355160-ffa54b67-11",
+     "source": "List of outfits in Super Mario Odyssey",
+     "page": "Outfits",
+     "score": 0.8245,
+     "relevant": true
+    },
+    {
+     "chunk_id": "p234774-17e5f9d8-06",
+     "source": "Crazy Cap",
+     "page": "List of items sold by Crazy Cap > Clothing",
+     "score": 0.8052,
+     "relevant": true
+    },
+    {
+     "chunk_id": "p355160-ffa54b67-10",
+     "source": "List of outfits in Super Mario Odyssey",
+     "page": "Outfits",
+     "score": 0.8049,
+     "relevant": true
+    },
+    {
+     "chunk_id": "p355160-ffa54b67-02",
+     "source": "List of outfits in Super Mario Odyssey",
+     "page": "Outfits",
+     "score": 0.8014,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p234774-17e5f9d8-00",
+     "source": "Crazy Cap",
+     "page": "List of items sold by Crazy Cap > Clothing",
+     "score": 0.7971,
+     "relevant": false
+    }
+   ],
+   "latency_s": 1.914,
+   "timings": {
+    "retrieval": 0.133,
+    "generation": 1.781
+   },
+   "tokens": {
+    "input": 3228,
+    "output": 225
+   },
+   "cost_usd": 0.0004353,
+   "error": null,
+   "metrics": {
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.6
+   }
+  },
+  {
+   "id": "demo-03",
+   "question": "Estoy atascado en el Reino de las Arenas, ¿cómo continúo?",
+   "answer": {
+    "answer": "No tengo información suficiente en los fragmentos para responder cómo continuar en el Reino de las Arenas (Sand Kingdom). Los fragmentos solo mencionan que es la única arena que el Sphynx no ha visitado y su punto de inicio en Balloon World, pero no describen cómo avanzar en el reino.",
+    "sources": [],
+    "abstained": true,
+    "tool_used": "search_documents",
+    "needs_human_review": false
+   },
+   "retrieved": [
+    {
+     "chunk_id": "p238207-d45fad6d-00",
+     "source": "Sphynx",
+     "page": "Questions and answers > Wooded Kingdom",
+     "score": 0.8012,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238207-5beb9bd2-00",
+     "source": "Sphynx",
+     "page": "Questions and answers > Darker Side",
+     "score": 0.801,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p238207-055f470d-00",
+     "source": "Sphynx",
+     "page": "Questions and answers > Moon Kingdom > Before defeating Bowser",
+     "score": 0.7997,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p246600-e59e8f15-00",
+     "source": "Balloon World",
+     "page": "Locations",
+     "score": 0.7961,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p235022-2473e96b-01",
+     "source": "Snow Kingdom",
+     "page": "Introduction",
+     "score": 0.7914,
+     "relevant": false
+    }
+   ],
+   "latency_s": 1.773,
+   "timings": {
+    "retrieval": 0.133,
+    "generation": 1.64
+   },
+   "tokens": {
+    "input": 3652,
+    "output": 141
+   },
+   "cost_usd": 0.0004357,
+   "error": null,
+   "metrics": {
+    "recall@5": 0.0,
+    "rr": 0.0,
+    "precision@5": 0.0
+   }
+  },
+  {
+   "id": "demo-04",
+   "question": "¿Qué necesito para desbloquear determinada zona?",
+   "answer": {
+    "answer": "La pregunta es demasiado general: los fragmentos no indican una zona concreta. Sí describen cómo se accede a algunas áreas. En Snow Kingdom, el Bound Bowl Grand Prix se abre reuniendo las cuatro Power Moons de las salas alrededor de su entrada [p235022-2473e96b-00]. Para entrar a Snowline Circuit hay que bajar por un agujero bloqueado por cuatro barreras de Bowser, cada una con Power Moons [p235022-a292636d-00]. En Mushroom Kingdom, The Sea of Clouds se accede por una tubería, pero primero hay que comer la fruta que bloquea la tubería como Yoshi, quien está encima del Castillo de Peach [p239165-a292636d-01]. Indica qué zona te interesa para darte la información exacta.",
+    "sources": [
+     {
+      "source": "Snow Kingdom",
+      "page": "Introduction",
+      "chunk_id": "p235022-2473e96b-00",
+      "url": "https://www.mariowiki.com/Snow_Kingdom"
+     },
+     {
+      "source": "Snow Kingdom",
+      "page": "Sub-areas",
+      "chunk_id": "p235022-a292636d-00",
+      "url": "https://www.mariowiki.com/Snow_Kingdom"
+     },
+     {
+      "source": "Mushroom Kingdom (Super Mario Odyssey)",
+      "page": "Sub-areas",
+      "chunk_id": "p239165-a292636d-01",
+      "url": "https://www.mariowiki.com/Mushroom_Kingdom_(Super_Mario_Odyssey)"
+     }
+    ],
+    "abstained": false,
+    "tool_used": "search_documents",
+    "needs_human_review": false
+   },
+   "retrieved": [
+    {
+     "chunk_id": "p239165-a292636d-01",
+     "source": "Mushroom Kingdom (Super Mario Odyssey)",
+     "page": "Sub-areas",
+     "score": 0.7817,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p235022-2473e96b-00",
+     "source": "Snow Kingdom",
+     "page": "Introduction",
+     "score": 0.7788,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p355160-ffa54b67-06",
+     "source": "List of outfits in Super Mario Odyssey",
+     "page": "Outfits",
+     "score": 0.7768,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p235022-a292636d-00",
+     "source": "Snow Kingdom",
+     "page": "Sub-areas",
+     "score": 0.7761,
+     "relevant": false
+    },
+    {
+     "chunk_id": "p235022-6d8d537a-00",
+     "source": "Snow Kingdom",
+     "page": "Sub-areas > Bonus areas",
+     "score": 0.7739,
+     "relevant": false
+    }
+   ],
+   "latency_s": 2.646,
+   "timings": {
+    "retrieval": 0.132,
+    "generation": 2.514
+   },
+   "tokens": {
+    "input": 3223,
+    "output": 353
+   },
+   "cost_usd": 0.0004988,
+   "error": null
+  }
+ ]
+}

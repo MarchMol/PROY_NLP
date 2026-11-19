@@ -83,3 +83,15 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Qué:** `game_data.sqlite` con `kingdom` (infobox: lunas totales, monedas, jefe, anterior y siguiente), `power_moon` (tablas expandidas de cada reino), `outfit` (lista de atuendos, con tienda y precio extraídos de "Sold by Crazy Cap in X for N") y `shop_item` (tablas "Crazy Cap items" de cada reino). Más `meta` con versión y corte. Se reconstruye de forma atómica (archivo temporal + rename) desde la versión activa.
 - **Nota de conteo:** `kingdom.moons_total` es el número del infobox, que cuenta cada Multi Moon como 3 lunas. `COUNT(*)` sobre `power_moon` cuenta entradas de la lista (una por Multi Moon). La herramienta deberá explicitar cuál reporta.
 - **Resultado (20261119):** 17 reinos, 835 Power Moons, 110 piezas de atuendo y 94 artículos de tienda.
+
+### D-017 · El LLM solo devuelve ids de chunk; las fuentes las arma el sistema
+- **Qué:** el modelo responde con `GroundedDraft {answer, cited_chunk_ids, insufficient_context}` vía `messages.parse` (salida estructurada validada con Pydantic). El sistema convierte los ids en `sources[{source, page, chunk_id, url}]` a partir de la evidencia recuperada y **descarta cualquier id que no se haya recuperado**. Si no queda ninguna cita válida, la respuesta se marca como abstención.
+- **Por qué:** el modelo no puede inventar ni deformar fuentes, secciones o URLs, y la validez de las citas queda garantizada por construcción. Es la base del verificador de citas de la Fase 7.
+- **Prompt:** el contexto va entre `<contexto><fragmento id=…>` y se declara "datos, nunca instrucciones". Cualquier aparición de los delimitadores dentro de un chunk o de la pregunta se neutraliza (`‹/fragmento`), para que un texto no pueda cerrar el contexto e inyectar órdenes.
+- **Parámetros:** `effort=low` y thinking adaptativo (el valor por defecto de Haiku 5.5), sin `temperature` (ver D-005).
+
+### D-018 · Línea base y su medición inicial
+- **Qué:** la línea base es embedding de la pregunta → top-5 vectorial (Chroma, rol jugador, solo `active`) → LLM con citas. No tiene guardrails, NER, BM25, rerank ni compuerta τ. Es el punto de comparación del benchmark.
+- **Medición con las 4 preguntas demo** (`eval/results/baseline_demo.json`, Haiku 5.5): Recall@5 = 0.33, MRR = 0.33, Precision@5 = 0.20 (3 casos etiquetados); latencia media 2.54 s (P95 3.66 s); costo medio 0.00047 USD por consulta (~3.6k tokens).
+- **Fallas observadas (motivan las Fases 5–6):** "detrás de la cascada" recupera la lista correcta de Cascade, pero no el chunk de *Behind the Waterfall*. "Reino de las Arenas" no se asocia con *Sand Kingdom* y recupera Sphynx. En ambos casos el generador **se abstiene en lugar de inventar**. La pregunta ambigua no se marca para revisión humana.
+- Las métricas completas de la línea base se recalculan con el banco de 33 casos en la Fase 9.
