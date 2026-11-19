@@ -19,6 +19,8 @@ def tmp_settings(tmp_path: Path) -> Settings:
     (internal / "notas.md").write_text(INTERNAL_MD, encoding="utf-8")
     return Settings(  # type: ignore[call-arg]
         _env_file=None,
+        data_dir=tmp_path,
+        logs_dir=tmp_path / "logs",
         raw_dir=tmp_path / "raw",
         processed_dir=tmp_path / "processed",
         index_dir=tmp_path / "index",

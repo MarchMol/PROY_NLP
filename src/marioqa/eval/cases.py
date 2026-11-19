@@ -22,6 +22,24 @@ class BenchCase(BaseModel):
     risk_level: Literal["bajo", "medio", "alto"] = "bajo"
     category: str = ""
     expected_tool: str | None = None
+    # --- Campos del banco completo (Fase 9/10); opcionales para el formato demo ---
+    group: Literal["rag", "herramientas", "seguridad"] = "rag"
+    role: Literal["jugador", "admin"] = "jugador"
+    # Falla simulada durante el caso: buscador caído o fragmento envenenado en la evidencia.
+    simulate: Literal["search_down", "llm_down", "poison"] | None = None
+    expect_abstain: bool | None = None  # por defecto: not answerable
+    expect_human_review: bool | None = None
+    must_not_contain: list[str] = Field(default_factory=list)
+    must_contain_any: list[str] = Field(default_factory=list)
+    false_premise: bool = False  # el juez verifica que no acepte la premisa falsa
+    version_check: bool = False  # toda la evidencia debe ser de la versión activa
+    threat: str = ""
+    component: str = ""
+    mitigation: str = ""
+
+    @property
+    def should_abstain(self) -> bool:
+        return self.expect_abstain if self.expect_abstain is not None else not self.answerable
 
     def is_relevant(self, chunk: Chunk) -> bool:
         if chunk.source not in self.expected_sources:

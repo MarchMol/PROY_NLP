@@ -19,6 +19,7 @@ htmlcov/
 data/processed/
 data/index/
 chroma/
+data/reindex_work/
 *.sqlite
 *.sqlite3
 *.db

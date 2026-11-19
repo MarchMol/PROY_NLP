@@ -110,6 +110,15 @@ class Settings(BaseSettings):
     sql_max_rows: int = Field(default=50, ge=1)
     sql_timeout_s: float = Field(default=2.0, gt=0)
 
+    # --- API / sesión -----------------------------------------------------
+    api_host: str = "127.0.0.1"
+    api_port: int = Field(default=8000, ge=1, le=65535)
+    # Token con el que un administrador inicia sesión en la UI/API. Sin él, nadie es admin.
+    admin_token: SecretStr | None = None
+    # Firma de la cookie de sesión. Si falta, se genera una al arrancar (sesiones no persisten).
+    session_secret: SecretStr | None = None
+    session_ttl_s: int = Field(default=8 * 3600, ge=60)
+
     # --- Logging -----------------------------------------------------------
     log_level: str = "INFO"
 

@@ -3,7 +3,7 @@
 
 PY ?= python
 
-.PHONY: help setup test lint fmt ingest-download ingest-chunks ingest demo
+.PHONY: help setup test lint fmt ingest-download ingest-chunks ingest demo run bench security
 
 help:
 	@$(PY) tasks.py --list
@@ -31,3 +31,12 @@ ingest:
 
 demo:
 	@$(PY) tasks.py demo
+
+run:
+	@$(PY) tasks.py run
+
+bench:
+	@$(PY) tasks.py bench
+
+security:
+	@$(PY) tasks.py security

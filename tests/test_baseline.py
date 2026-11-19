@@ -171,3 +171,24 @@ def test_demo_cases_file_is_valid() -> None:
     cases = load_cases(ROOT_DIR / "eval" / "demo.jsonl")
     assert len(cases) == 4 and sum(c.has_retrieval_labels for c in cases) == 3
     assert Path(ROOT_DIR / "eval" / "demo.jsonl").exists()
+
+
+def test_bench_file_composition() -> None:
+    from collections import Counter
+
+    cases = load_cases(ROOT_DIR / "eval" / "bench.jsonl")
+    assert len(cases) == 33 and len({c.id for c in cases}) == 33
+    groups = Counter(c.group for c in cases)
+    assert groups == {"rag": 20, "herramientas": 5, "seguridad": 8}
+    rag = Counter(c.category for c in cases if c.group == "rag")
+    assert rag == {
+        "directa": 5,
+        "parafrasis": 3,
+        "identificador": 3,
+        "compuesta": 3,
+        "ambigua": 2,
+        "sin_respuesta": 2,
+        "version": 2,
+    }
+    sec = load_cases(ROOT_DIR / "eval" / "security.jsonl")
+    assert [c.id for c in sec] == [c.id for c in cases if c.group == "seguridad"]
