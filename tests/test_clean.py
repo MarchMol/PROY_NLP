@@ -97,5 +97,16 @@ def test_header_row_without_row_separator() -> None:
     assert sec.text == "#: 4; Name: Behind."
 
 
+def test_navbox_tables_are_dropped() -> None:
+    wiki = (
+        "Intro text.\n"
+        '{|class="mw-collapsible navbox mario"\n'
+        '!colspan=3|<div class="navspace">Edit</div> Kingdoms\n'
+        "|-\n|Cap Kingdom\n|}\n"
+    )
+    (sec,) = clean_wikitext("L", wiki).sections
+    assert sec.text == "Intro text."
+
+
 def test_normalize_text_collapses_whitespace() -> None:
     assert normalize_text("a  \t b\n\n\n\nc &amp; d\n ; \n") == "a b\nc & d"

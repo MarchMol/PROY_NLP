@@ -66,6 +66,7 @@ class Settings(BaseSettings):
     processed_dir: Path = ROOT_DIR / "data" / "processed"
     internal_docs_dir: Path = ROOT_DIR / "data" / "internal"
     chroma_dir: Path = ROOT_DIR / "chroma"
+    index_dir: Path = ROOT_DIR / "data" / "index"
     sqlite_path: Path = ROOT_DIR / "data" / "game_data.sqlite"
     logs_dir: Path = ROOT_DIR / "logs"
     seed_titles_path: Path = ROOT_DIR / "data" / "seed_titles.txt"
@@ -79,6 +80,11 @@ class Settings(BaseSettings):
     embed_model: str = "intfloat/multilingual-e5-base"
     rerank_model: str = "BAAI/bge-reranker-v2-m3"
     chroma_collection: str = "smo_chunks"
+    embed_batch_size: int = Field(default=16, ge=1)
+
+    def collection_name(self, chunk_tokens: int | None = None) -> str:
+        """Una colección por tamaño de ventana, para comparar 200/300/500."""
+        return f"{self.chroma_collection}_w{chunk_tokens or self.chunk_tokens}"
 
     # --- Recuperación ------------------------------------------------------
     top_k_branch: int = Field(default=20, ge=1)

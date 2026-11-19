@@ -192,10 +192,26 @@ def _end_sentence(text: str) -> str:
     return text if text.endswith((".", "!", "?")) else text + "."
 
 
-def _render_table(table: Tag) -> str:
+@dataclass
+class Table:
+    """Tabla con celdas ya limpias; `rowspan`/`colspan` resueltos."""
+
+    section: str
+    headers: list[str]
+    rows: list[list[str]]
+
+    def records(self) -> list[dict[str, str]]:
+        """Filas como dicts encabezado → valor (columnas sin encabezado se omiten)."""
+        return [
+            {h: (row[i] if i < len(row) else "") for i, h in enumerate(self.headers) if h}
+            for row in self.rows
+        ]
+
+
+def _table_matrix(table: Tag) -> tuple[list[str], list[list[str]]]:
     headers: list[str] = []
     carry: dict[int, tuple[str, int]] = {}  # columna → (valor, filas restantes)
-    lines: list[str] = []
+    rows: list[list[str]] = []
     for cells in _table_rows(table):
         if not cells:
             continue
@@ -222,6 +238,14 @@ def _render_table(table: Tag) -> str:
                 if rowspan > 1:
                     carry[col] = (val, rowspan - 1)
                 col += 1
+        rows.append(values)
+    return headers, rows
+
+
+def _render_table(table: Tag) -> str:
+    headers, rows = _table_matrix(table)
+    lines: list[str] = []
+    for values in rows:
         pairs: list[str] = []
         seen: set[tuple[str, str]] = set()
         for i, val in enumerate(values):
@@ -252,7 +276,7 @@ def _render_node(node: Node) -> str:
         return _render_template(node)
     if isinstance(node, Tag):
         tag = str(node.tag).lower()
-        if tag in DROP_TAGS:
+        if tag in DROP_TAGS or _is_navigation(node):
             return ""
         if tag == "table":
             return _render_table(node)
@@ -266,6 +290,17 @@ def _render_node(node: Node) -> str:
     if isinstance(node, (Comment, Heading)):
         return ""
     return str(node)
+
+
+NAV_CLASSES = ("navbox", "navspace")
+
+
+def _is_navigation(tag: Tag) -> bool:
+    """Navboxes que aparecen al expandir plantillas (p. ej. `{{SMO kingdoms}}`)."""
+    if not tag.has("class"):
+        return False
+    classes = str(tag.get("class").value).lower()
+    return any(c in classes for c in NAV_CLASSES)
 
 
 _REGIONAL_FILE = re.compile(r"regional coin \(([^)]+)\)", re.I)
@@ -336,5 +371,59 @@ def clean_wikitext(title: str, wikitext: str) -> CleanDocument:
             current_path = [h for _, h in stack]
         else:
             buffer.append(node)
+    flush()
+    return doc
+
+
+def extract_tables(wikitext: str) -> list[Table]:
+    """Tablas de primer nivel (sin navboxes), con la ruta de sección donde aparecen."""
+    code = mwparserfromhell.parse(wikitext)
+    stack: list[tuple[int, str]] = []
+    tables: list[Table] = []
+    for node in code.nodes:
+        if isinstance(node, Heading):
+            heading = _collapse_inline(normalize_text(_render(node.title)))
+            while stack and stack[-1][0] >= node.level:
+                stack.pop()
+            stack.append((node.level, heading))
+        elif (
+            isinstance(node, Tag) and str(node.tag).lower() == "table" and not _is_navigation(node)
+        ):
+            headers, rows = _table_matrix(node)
+            section = " > ".join(h for _, h in stack) or INTRO_SECTION
+            tables.append(Table(section=section, headers=headers, rows=rows))
+    return tables
+
+
+_MD_HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
+
+
+def clean_markdown(title: str, markdown: str) -> CleanDocument:
+    """Markdown (documentos internos) → secciones; el `#` de nivel 1 es el título del documento."""
+    doc = CleanDocument(title=title)
+    stack: list[tuple[int, str]] = []
+    path: list[str] = [INTRO_SECTION]
+    buffer: list[str] = []
+
+    def flush() -> None:
+        text = normalize_text("\n".join(buffer))
+        if text:
+            doc.sections.append(Section(path=list(path), text=text))
+
+    for line in markdown.splitlines():
+        m = _MD_HEADING.match(line)
+        if not m:
+            buffer.append(re.sub(r"[*_`]{1,3}", "", line).lstrip("-* ").strip())
+            continue
+        level, heading = len(m.group(1)), m.group(2)
+        if level == 1:
+            doc.title = heading
+            continue
+        flush()
+        buffer = []
+        while stack and stack[-1][0] >= level:
+            stack.pop()
+        stack.append((level, heading))
+        path = [h for _, h in stack]
     flush()
     return doc
