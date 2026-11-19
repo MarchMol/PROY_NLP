@@ -1,0 +1,247 @@
+[
+ {
+  "config": "baseline (vectorial top-5)",
+  "recall@5": 0.3333333333333333,
+  "mrr": 0.3333333333333333,
+  "precision@5": 0.19999999999999998,
+  "latency_mean_s": 0.16654246666682107,
+  "latency_p95_s": 0.20753395999963686,
+  "cases": [
+   {
+    "id": "demo-01",
+    "recall@5": 0.0,
+    "rr": 0.0,
+    "precision@5": 0.0,
+    "top": [
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction"
+    ]
+   },
+   {
+    "id": "demo-02",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.6,
+    "top": [
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing"
+    ]
+   },
+   {
+    "id": "demo-03",
+    "recall@5": 0.0,
+    "rr": 0.0,
+    "precision@5": 0.0,
+    "top": [
+     "Sphynx › Questions and answers > Wooded Kingdom",
+     "Sphynx › Questions and answers > Darker Side",
+     "Sphynx › Questions and answers > Moon Kingdom > Before defeating Bowser",
+     "Balloon World › Locations",
+     "Snow Kingdom › Introduction"
+    ]
+   }
+  ]
+ },
+ {
+  "config": "híbrida ponderada + NER",
+  "recall@5": 1.0,
+  "mrr": 0.7777777777777778,
+  "precision@5": 0.3333333333333333,
+  "latency_mean_s": 0.17870970000027833,
+  "latency_p95_s": 0.18504295000093407,
+  "cases": [
+   {
+    "id": "demo-01",
+    "recall@5": 1.0,
+    "rr": 0.3333333333333333,
+    "precision@5": 0.2,
+    "top": [
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction ✓",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction"
+    ]
+   },
+   {
+    "id": "demo-02",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.6,
+    "top": [
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing"
+    ]
+   },
+   {
+    "id": "demo-03",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.2,
+    "top": [
+     "Sand Kingdom › Introduction ✓",
+     "Super Mario Odyssey › Kingdoms",
+     "Sphynx › Questions and answers > Darker Side",
+     "Balloon World › Locations",
+     "Lost Kingdom › Introduction"
+    ]
+   }
+  ]
+ },
+ {
+  "config": "híbrida RRF + NER",
+  "recall@5": 1.0,
+  "mrr": 0.7777777777777778,
+  "precision@5": 0.39999999999999997,
+  "latency_mean_s": 0.18550026666707709,
+  "latency_p95_s": 0.2011103600001661,
+  "cases": [
+   {
+    "id": "demo-01",
+    "recall@5": 1.0,
+    "rr": 0.3333333333333333,
+    "precision@5": 0.2,
+    "top": [
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction ✓",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction"
+    ]
+   },
+   {
+    "id": "demo-02",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.4,
+    "top": [
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits",
+     "List of outfits in Super Mario Odyssey › Outfits",
+     "List of outfits in Super Mario Odyssey › Outfits"
+    ]
+   },
+   {
+    "id": "demo-03",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.6,
+    "top": [
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Checkpoint Flag locations > Tostarena Ruins Round Tower",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Paintings"
+    ]
+   }
+  ]
+ },
+ {
+  "config": "híbrida ponderada + NER + rerank",
+  "recall@5": 1.0,
+  "mrr": 0.8333333333333334,
+  "precision@5": 0.5333333333333333,
+  "latency_mean_s": 2.1676687999994706,
+  "latency_p95_s": 2.212147079999704,
+  "cases": [
+   {
+    "id": "demo-01",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.2,
+    "top": [
+     "List of Power Moons in the Cascade Kingdom › Introduction ✓",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction"
+    ]
+   },
+   {
+    "id": "demo-02",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.8,
+    "top": [
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing",
+     "Bowser's Kingdom › Regional coins ✓"
+    ]
+   },
+   {
+    "id": "demo-03",
+    "recall@5": 1.0,
+    "rr": 0.5,
+    "precision@5": 0.6,
+    "top": [
+     "Super Mario Odyssey › Kingdoms",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Introduction ✓",
+     "Balloon World › Locations"
+    ]
+   }
+  ]
+ },
+ {
+  "config": "híbrida RRF + NER + rerank",
+  "recall@5": 1.0,
+  "mrr": 0.8333333333333334,
+  "precision@5": 0.39999999999999997,
+  "latency_mean_s": 2.4293847666667716,
+  "latency_p95_s": 2.5998933200004104,
+  "cases": [
+   {
+    "id": "demo-01",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.2,
+    "top": [
+     "List of Power Moons in the Cascade Kingdom › Introduction ✓",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction",
+     "List of Power Moons in the Cascade Kingdom › Introduction"
+    ]
+   },
+   {
+    "id": "demo-02",
+    "recall@5": 1.0,
+    "rr": 1.0,
+    "precision@5": 0.6,
+    "top": [
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "List of outfits in Super Mario Odyssey › Outfits ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing ✓",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing",
+     "Crazy Cap › List of items sold by Crazy Cap > Clothing"
+    ]
+   },
+   {
+    "id": "demo-03",
+    "recall@5": 1.0,
+    "rr": 0.5,
+    "precision@5": 0.4,
+    "top": [
+     "Super Mario Odyssey › Kingdoms",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Checkpoint Flag locations > Tostarena Ruins Round Tower",
+     "Sand Kingdom › Introduction ✓",
+     "Sand Kingdom › Power Moons"
+    ]
+   }
+  ]
+ }
+]

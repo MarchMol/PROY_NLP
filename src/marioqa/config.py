@@ -79,7 +79,8 @@ class Settings(BaseSettings):
 
     # --- Embeddings / índices ---------------------------------------------
     embed_model: str = "intfloat/multilingual-e5-base"
-    rerank_model: str = "BAAI/bge-reranker-v2-m3"
+    # bge-reranker-v2-m3 (anteproyecto) tarda ~43 s/consulta en CPU; ver D-022.
+    rerank_model: str = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
     chroma_collection: str = "smo_chunks"
     embed_batch_size: int = Field(default=16, ge=1)
 
@@ -94,6 +95,12 @@ class Settings(BaseSettings):
     fusion_w_dense: float = Field(default=0.6, ge=0.0, le=1.0)
     fusion_w_lexical: float = Field(default=0.4, ge=0.0, le=1.0)
     rrf_k: int = Field(default=60, ge=1)
+    # Bono de fusión a chunks del artículo de una entidad detectada por el NER.
+    entity_boost: float = Field(default=0.1, ge=0.0, le=1.0)
+    rerank_enabled: bool = True
+    rerank_top_n: int = Field(default=10, ge=1)
+    rerank_max_length: int = Field(default=512, ge=64)
+    rerank_batch_size: int = Field(default=8, ge=1)
     evidence_tau: float = Field(default=0.30, ge=0.0, le=1.0)
 
     # --- Guardrails / herramientas ----------------------------------------

@@ -112,3 +112,19 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 ### D-021 · Expansión de la consulta
 - **Qué:** `expanded_query` = pregunta original + nombres canónicos en inglés de las entidades detectadas + traducciones del glosario para los tokens no cubiertos por entidades.
 - **Efecto medido (preguntas demo, sin fusión ni rerank):** "Reino de las Arenas" pasa de **0 resultados útiles** en ambas ramas a tener la evidencia en el top-5 de las dos. En "detrás de la cascada", BM25 pasa de RR 0.10 a 0.50. Con expansión, la evidencia correcta queda en el top-20 de ambas ramas en los 3 casos etiquetados. La fusión y el rerank (Fase 6) parten de ahí.
+
+### D-022 · Búsqueda híbrida + rerank: modelo y número de candidatos
+- **Qué:** vectorial (top-20) + BM25 (top-20) sobre la **consulta expandida** por el NER → fusión ponderada (0.6/0.4, con RRF como alternativa configurable) + bono de 0.1 a chunks del artículo de una entidad detectada → rerank de los **10** mejores con `cross-encoder/mmarco-mMiniLMv2-L12-H384-v1` → top-5 → segunda validación de permisos. Puntaje de la compuerta = sigmoide del logit del reranker.
+- **Por qué no `bge-reranker-v2-m3` (el del anteproyecto):** en esta máquina (CPU, 4 hilos) tarda ~2 s por par, es decir **~43 s por consulta** con 20 candidatos. Más hilos no ayudan y la cuantización dinámica de torch está deprecada. Medición sobre las 3 preguntas demo etiquetadas:
+
+  | Configuración | R@5 | MRR | P@5 | Latencia de recuperación |
+  |---|---|---|---|---|
+  | Línea base vectorial | 0.33 | 0.33 | 0.20 | 0.2 s |
+  | Híbrida + NER (sin rerank) | 1.00 | 0.78 | 0.33 | 0.2 s |
+  | + `bge-reranker-v2-m3`, top-20 | 1.00 | 0.78 | 0.47 | 43 s |
+  | + `mmarco-mMiniLMv2`, top-20 | 1.00 | 0.67 | 0.40 | 4.4 s |
+  | **+ `mmarco-mMiniLMv2`, top-10** | **1.00** | **0.83** | **0.53** | **2.2 s** |
+
+- **Conclusión:** la mayor parte de la mejora viene de la búsqueda híbrida con alias. El reranker chico con top-10 da la mejor calidad dentro del presupuesto de latencia (≈ 2.2 s + ~2.5 s del LLM). `bge-reranker-v2-m3` sigue disponible con `RERANK_MODEL` (y `RERANK_ENABLED=false` lo apaga). Con solo 3 casos la evidencia es preliminar: la elección se confirma con el banco de 33 casos (Fase 9).
+- **Ojo:** τ depende de la escala del reranker; si se cambia de modelo, se recalibra.
+- Resultados completos en `eval/results/retrieval_demo_*.json`.
