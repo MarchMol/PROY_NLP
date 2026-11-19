@@ -57,12 +57,22 @@ def ingest_download() -> int:
     return _run(PY, "-m", "marioqa.ingest.download")
 
 
+def ingest_chunks() -> int:
+    """Limpia el último snapshot y genera chunks (ventanas 200, 300 y 500)."""
+    for size in ("200", "300", "500"):
+        rc = _run(PY, "-m", "marioqa.ingest.build_chunks", "--chunk-tokens", size)
+        if rc:
+            return rc
+    return 0
+
+
 TASKS: dict[str, Callable[[], int]] = {
     "setup": setup,
     "test": test,
     "lint": lint,
     "fmt": fmt,
     "ingest-download": ingest_download,
+    "ingest-chunks": ingest_chunks,
 }
 
 

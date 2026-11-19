@@ -1,9 +1,12 @@
 # Artículos de la Super Mario Wiki que forman el corpus (títulos canónicos verificados con la API).
-# Se excluyen artículos multi-juego muy largos (Bowser, Goomba, Warp Pipe…) porque meten ruido de otros juegos.
+# `[tipo]` fija el entity_type de los títulos que siguen.
+# Se excluyen artículos multi-juego muy largos (Bowser, Goomba, Warp Pipe…): meten ruido de otros juegos.
 
-# Juego, mecánicas y tiendas
+[game]
 Super Mario Odyssey
 Odyssey
+
+[mechanic]
 Cappy
 Capture
 Power Moon
@@ -17,15 +20,18 @@ Hint Art
 Talkatoo
 Uncle amiibo
 Scarecrow
-Crazy Cap
-List of outfits in Super Mario Odyssey
 Balloon World
 Koopa Freerunning
 Bound Bowl Grand Prix
 Picture Match
-Tiara
 
-# Reinos (17)
+[shop]
+Crazy Cap
+
+[outfit]
+List of outfits in Super Mario Odyssey
+
+[kingdom]
 Cap Kingdom
 Cascade Kingdom
 Sand Kingdom
@@ -44,7 +50,11 @@ Mushroom Kingdom (Super Mario Odyssey)
 Dark Side
 Darker Side
 
-# Power Moons por reino (Darker Side no tiene lista propia; está en su artículo)
+[location]
+New Donk City
+
+# Darker Side no tiene lista propia; sus lunas están en su artículo.
+[power_moon]
 List of Power Moons in the Cap Kingdom
 List of Power Moons in the Cascade Kingdom
 List of Power Moons in the Sand Kingdom
@@ -62,7 +72,7 @@ List of Power Moons in the Moon Kingdom
 List of Power Moons in the Mushroom Kingdom
 List of Power Moons in the Dark Side
 
-# Jefes
+[boss]
 Broodals
 Topper
 Hariet
@@ -77,13 +87,16 @@ Cookatiel
 Ruined Dragon
 RoboBrood
 
-# Habitantes, ciudades y capturas propias del juego
-New Donk City
+[character]
+Tiara
 Bonneter
 Tostarenan
 Shiverian
 Bubblainian
 Volbonan
+Sphynx
+
+[capture]
 Jaxi
 Moe-Eye
 Glydon
@@ -92,4 +105,3 @@ Uproot
 Gushen
 Ty-foo
 Tropical Wiggler
-Sphynx

@@ -45,14 +45,27 @@ def utc_now_iso() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def read_seed_titles(path: Path) -> list[str]:
-    """Lee títulos (uno por línea), ignorando comentarios `#` y vacíos; deduplica en orden."""
-    titles: list[str] = []
+DEFAULT_ENTITY_TYPE = "other"
+
+
+def read_seed_entities(path: Path) -> dict[str, str]:
+    """Título → entity_type, según las secciones `[tipo]` del archivo semilla (orden preservado)."""
+    current = DEFAULT_ENTITY_TYPE
+    out: dict[str, str] = {}
     for line in path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
-        if line and not line.startswith("#"):
-            titles.append(line)
-    return list(dict.fromkeys(titles))
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            current = line[1:-1].strip() or DEFAULT_ENTITY_TYPE
+            continue
+        out.setdefault(line, current)
+    return out
+
+
+def read_seed_titles(path: Path) -> list[str]:
+    """Títulos semilla (uno por línea), sin comentarios, encabezados ni duplicados."""
+    return list(read_seed_entities(path))
 
 
 def write_snapshot(

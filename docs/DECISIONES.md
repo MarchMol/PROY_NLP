@@ -43,3 +43,19 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Qué:** `data/raw/<AAAAMMDD>[-asof]/manifest.json` + `pages/<pageid>.json`. El ID usa la fecha de corte en UTC. El manifest guarda el `revid`, el timestamp, la URL y el SHA-256 del wikitexto de cada página. Al cargar se verifica el hash.
 - **Por qué:** cada snapshot es una "foto completa" versionada e inmutable (no se sobreescribe sin `--overwrite`). `--as-of <fecha>` descarga la revisión vigente en esa fecha (`rvstart` + `rvdir=older`); así se generan los dos snapshots de los casos dependientes de versión con datos reales.
 - **Alternativa:** guardar todo en un solo JSONL. Se descartó porque un archivo por página es más fácil de inspeccionar y de comparar entre versiones.
+
+### D-009 · Limpieza: árbol de mwparserfromhell, tablas linealizadas
+- **Qué:** se recorre el árbol del wikitexto. Se conservan el texto de los enlaces y de las plantillas "de contenido" (`wp`, `button`, `hover`, monedas, etc.) y se eliminan referencias, imágenes, categorías, comentarios y el resto de plantillas (navboxes, citas, `foreign names`…). Las **tablas** se convierten en una fila por línea, `Columna: valor; Columna: valor.`, respetando `rowspan`/`colspan`. Los **infoboxes** quedan como una línea `clave: valor; …` (p. ej. `boss: Madame Broode; moons: 42; next: Sand Kingdom.`).
+- **Por qué:** los datos clave del juego viven en tablas (cada luna con su ubicación y disponibilidad, precios de Crazy Cap, atuendos). Si se quitaran como "ruido", las preguntas demo serían irrespondibles. El ícono de moneda regional se traduce a `[regional coin (Reino)]` porque indica dónde se compra cada artículo.
+- **Secciones descartadas:** References, Notes, Gallery, Names in other languages, Profiles, See also, Appearances in other media, Staff, Music, Release y similares (lista en `clean.DROP_SECTIONS`).
+- **Alternativa:** `strip_code()` de mwparserfromhell. Se descartó porque borra las tablas por completo.
+
+### D-010 · Chunking: tokens reales de e5, filas de tabla atómicas
+- **Qué:** los tokens se cuentan con el tokenizer de `multilingual-e5-base` (sin tokens especiales). La ventana incluye el prefijo `Título > Sección`, así que ningún chunk supera `CHUNK_TOKENS`. Se corta en límite de oración y cada fila de tabla es una unidad indivisible (solo se parte si por sí sola excede la ventana). El solape retrocede oraciones completas hasta `CHUNK_OVERLAP_TOKENS`. Al usar otra ventana sin indicar solape, se usa el 15 % de la ventana.
+- **Unión de secciones cortas:** las secciones de menos de `MIN_SECTION_TOKENS` se unen con la siguiente. La última sección corta se une a la anterior. `page` = primera sección del grupo y `sections` = todas las secciones del grupo (para evaluar `expected_pages`).
+- **Resultado (snapshot 20261119):** w200 → 1842 chunks, w300 → 1199 y w500 → 795. Incluso la ventana de 500 cabe en el límite de 512 tokens de e5.
+
+### D-011 · `chunk_id` determinista y versión del chunk
+- **Qué:** `chunk_id = p<pageid>-<sha1(ruta de sección)[:8]>-<nº de ventana>`. `version` = ID del snapshot (fecha de corte), y cada chunk lleva también `revid` y `cutoff`.
+- **Por qué:** el id no depende del contenido de otras secciones, así que editar una sección no cambia los ids del resto. Dos snapshots producen el mismo `chunk_id` para la misma sección. La pareja (`version`, `chunk_id`) identifica un chunk de forma única en el índice, y el versionado active/deprecated (Fase 3) opera sobre `version`.
+- **Alternativa:** hash del texto como id. Se descartó porque cualquier edición menor cambiaría el id y rompería las referencias del banco de pruebas.

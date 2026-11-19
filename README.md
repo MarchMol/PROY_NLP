@@ -19,6 +19,7 @@ python tasks.py setup        # crea .venv e instala dependencias fijadas
 cp .env.example .env         # luego edita .env (LLM_PROVIDER, LLM_API_KEY, WIKI_CONTACT)
 python tasks.py test         # corre los tests (sin red, LLM en modo mock)
 python tasks.py ingest-download   # descarga los artículos semilla a data/raw/<fecha>/
+python tasks.py ingest-chunks     # limpia y trocea el último snapshot (ventanas 200/300/500)
 ```
 
 Con `make` disponible: `make setup`, `make test`.

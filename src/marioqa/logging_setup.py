@@ -22,7 +22,16 @@ def setup_logging(level: str = "INFO") -> None:
     root.addHandler(handler)
     root.setLevel(level)
     # Librerías ruidosas
-    for noisy in ("httpx", "httpcore", "chromadb", "sentence_transformers", "urllib3"):
+    for noisy in (
+        "httpx",
+        "httpx2",
+        "httpcore",
+        "huggingface_hub",
+        "transformers",
+        "chromadb",
+        "sentence_transformers",
+        "urllib3",
+    ):
         logging.getLogger(noisy).setLevel(logging.WARNING)
     root._marioqa_configured = True  # type: ignore[attr-defined]
 
