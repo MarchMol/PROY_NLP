@@ -14,6 +14,9 @@ def setup_logging(level: str = "INFO") -> None:
     if getattr(root, "_marioqa_configured", False):
         root.setLevel(level)
         return
+    # La consola de Windows usa cp1252 por defecto y rompe acentos y flechas.
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     handler = logging.StreamHandler(sys.stderr)
     handler.setFormatter(logging.Formatter(_FORMAT, datefmt="%H:%M:%S"))
     root.addHandler(handler)

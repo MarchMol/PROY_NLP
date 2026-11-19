@@ -1,0 +1,95 @@
+# Artículos de la Super Mario Wiki que forman el corpus (títulos canónicos verificados con la API).
+# Se excluyen artículos multi-juego muy largos (Bowser, Goomba, Warp Pipe…) porque meten ruido de otros juegos.
+
+# Juego, mecánicas y tiendas
+Super Mario Odyssey
+Odyssey
+Cappy
+Capture
+Power Moon
+Multi Moon
+Moon Rock
+Moon Pipe
+Regional coin
+Life-Up Heart
+Checkpoint Flag
+Hint Art
+Talkatoo
+Uncle amiibo
+Scarecrow
+Crazy Cap
+List of outfits in Super Mario Odyssey
+Balloon World
+Koopa Freerunning
+Bound Bowl Grand Prix
+Picture Match
+Tiara
+
+# Reinos (17)
+Cap Kingdom
+Cascade Kingdom
+Sand Kingdom
+Lake Kingdom
+Wooded Kingdom
+Cloud Kingdom
+Lost Kingdom
+Metro Kingdom
+Snow Kingdom
+Seaside Kingdom
+Luncheon Kingdom
+Ruined Kingdom
+Bowser's Kingdom
+Moon Kingdom
+Mushroom Kingdom (Super Mario Odyssey)
+Dark Side
+Darker Side
+
+# Power Moons por reino (Darker Side no tiene lista propia; está en su artículo)
+List of Power Moons in the Cap Kingdom
+List of Power Moons in the Cascade Kingdom
+List of Power Moons in the Sand Kingdom
+List of Power Moons in the Lake Kingdom
+List of Power Moons in the Wooded Kingdom
+List of Power Moons in the Cloud Kingdom
+List of Power Moons in the Lost Kingdom
+List of Power Moons in the Metro Kingdom
+List of Power Moons in the Snow Kingdom
+List of Power Moons in the Seaside Kingdom
+List of Power Moons in the Luncheon Kingdom
+List of Power Moons in the Ruined Kingdom
+List of Power Moons in Bowser's Kingdom
+List of Power Moons in the Moon Kingdom
+List of Power Moons in the Mushroom Kingdom
+List of Power Moons in the Dark Side
+
+# Jefes
+Broodals
+Topper
+Hariet
+Rango
+Spewart
+Madame Broode
+Knucklotec
+Torkdrift
+Mechawiggler
+Mollusque-Lanceur
+Cookatiel
+Ruined Dragon
+RoboBrood
+
+# Habitantes, ciudades y capturas propias del juego
+New Donk City
+Bonneter
+Tostarenan
+Shiverian
+Bubblainian
+Volbonan
+Jaxi
+Moe-Eye
+Glydon
+Pokio
+Uproot
+Gushen
+Ty-foo
+Tropical Wiggler
+Sphynx

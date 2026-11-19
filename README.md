@@ -18,6 +18,7 @@ Es un sistema de recuperación aumentada por generación (RAG) agéntico. Respon
 python tasks.py setup        # crea .venv e instala dependencias fijadas
 cp .env.example .env         # luego edita .env (LLM_PROVIDER, LLM_API_KEY, WIKI_CONTACT)
 python tasks.py test         # corre los tests (sin red, LLM en modo mock)
+python tasks.py ingest-download   # descarga los artículos semilla a data/raw/<fecha>/
 ```
 
 Con `make` disponible: `make setup`, `make test`.

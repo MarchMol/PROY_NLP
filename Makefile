@@ -3,7 +3,7 @@
 
 PY ?= python
 
-.PHONY: help setup test lint fmt
+.PHONY: help setup test lint fmt ingest-download
 
 help:
 	@$(PY) tasks.py --list
@@ -19,3 +19,6 @@ lint:
 
 fmt:
 	@$(PY) tasks.py fmt
+
+ingest-download:
+	@$(PY) tasks.py ingest-download

@@ -52,11 +52,17 @@ def fmt() -> int:
     return _run(PY, "-m", "ruff", "format", "src", "tests", "tasks.py")
 
 
+def ingest_download() -> int:
+    """Descarga los artículos semilla a un snapshot nuevo en data/raw/."""
+    return _run(PY, "-m", "marioqa.ingest.download")
+
+
 TASKS: dict[str, Callable[[], int]] = {
     "setup": setup,
     "test": test,
     "lint": lint,
     "fmt": fmt,
+    "ingest-download": ingest_download,
 }
 
 
