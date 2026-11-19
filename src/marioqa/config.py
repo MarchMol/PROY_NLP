@@ -41,7 +41,7 @@ class Settings(BaseSettings):
 
     # --- LLM ---------------------------------------------------------------
     llm_provider: LLMProvider = LLMProvider.MOCK
-    llm_model: str = "claude-opus-5-5"
+    llm_model: str = "claude-haiku-5-5"
     llm_api_key: SecretStr | None = None
     llm_judge_model: str | None = None
     llm_effort: str = "low"
@@ -49,8 +49,8 @@ class Settings(BaseSettings):
     llm_timeout_s: float = Field(default=30.0, gt=0)
     llm_max_retries: int = Field(default=1, ge=0)
     # Tarifas en USD por millón de tokens (para reportar costo por consulta).
-    llm_price_input_per_mtok: float = Field(default=4.0, ge=0)
-    llm_price_output_per_mtok: float = Field(default=20.0, ge=0)
+    llm_price_input_per_mtok: float = Field(default=0.10, ge=0)
+    llm_price_output_per_mtok: float = Field(default=0.50, ge=0)
 
     # --- Fuente (MediaWiki) ------------------------------------------------
     wiki_api_url: str = "https://www.mariowiki.com/api.php"
