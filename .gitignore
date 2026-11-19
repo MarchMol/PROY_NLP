@@ -17,6 +17,7 @@ htmlcov/
 
 # Regenerables desde data/raw/ (los snapshots crudos SÍ se versionan: fijan el corpus)
 data/processed/
+data/index/
 chroma/
 *.sqlite
 *.sqlite3

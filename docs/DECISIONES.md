@@ -64,3 +64,22 @@ Registro de decisiones que no estaban fijadas en el anteproyecto. Formato: **qu�
 - **Qué:** `data/raw/<snapshot>/` se commitea (~5 MB por snapshot, JSON de texto). `data/processed/`, `chroma/` y `*.sqlite` siguen ignorados porque se regeneran de forma determinista desde el raw.
 - **Por qué:** la wiki cambia continuamente. Re-descargar produce otros `revid` y otro texto, lo que rompería las fuentes esperadas del banco de pruebas. Fijar el snapshot hace el proyecto reproducible. CC BY-SA permite redistribuir con atribución, que va en `data/raw/README.md`.
 - **Alternativa:** publicar el snapshot como *release asset* o con Git LFS. No hace falta con este tamaño.
+
+### D-013 · Se descartan navboxes al limpiar
+- **Qué:** las tablas y `div` con clase `navbox`/`navspace` se eliminan.
+- **Por qué:** al expandir plantillas, las listas de Power Moons arrastran el navbox `{{SMO kingdoms}}`. Eran **107 chunks de ruido** (~9 % del corpus) con texto repetido como "[Edit] Kingdoms in Super Mario Odyssey…". Tras quitarlos, el corpus w300 quedó en 1104 chunks.
+
+### D-014 · Índices: una colección de Chroma por ventana, filtros dentro de la consulta
+- **Qué:** la colección es `smo_chunks_w<N>` (HNSW, coseno) y el id de cada documento es `<versión>::<chunk_id>`. El filtro de rol, estado y versión va en el `where` de Chroma. En BM25 se filtran los candidatos **antes** de rankear, con la misma regla (`index/access.py`). Así el modelo nunca ve un candidato no autorizado, y la segunda validación de permisos (Fase 6) usa esa misma función.
+- **BM25:** `rank_bm25.BM25Okapi` con un tokenizador simple (minúsculas, sin acentos, pocas stopwords en/es) y persistido en JSON (no pickle). Cuenta como coincidencia que el documento comparta al menos un término con la consulta, no `score > 0`: con Okapi, un término presente en la mitad del corpus tiene IDF ≈ 0.
+- **Alternativa:** BM25 dentro de SQLite FTS5. Se descartó porque el anteproyecto fija `rank_bm25`.
+
+### D-015 · Versionado y `ingest` idempotente
+- **Qué:** se indexan **todos** los snapshots presentes. El de fecha de corte más reciente queda `active` y los demás `deprecated` (`index/versions.py`, persistido en `data/index/versions_<colección>.json`). Solo se re-embeben los chunks cuyo `hash` cambió, y se borran los que ya no existen en su versión.
+- **Por qué:** cumple "reingesta = versión nueva y la anterior deprecated", permite consultar versiones viejas (`include_deprecated`, para los casos de versión) y hace que repetir `ingest` no recalcule embeddings.
+- Los documentos internos se indexan dentro de cada versión del corpus, así siguen su mismo estado.
+
+### D-016 · SQLite de datos exactos
+- **Qué:** `game_data.sqlite` con `kingdom` (infobox: lunas totales, monedas, jefe, anterior y siguiente), `power_moon` (tablas expandidas de cada reino), `outfit` (lista de atuendos, con tienda y precio extraídos de "Sold by Crazy Cap in X for N") y `shop_item` (tablas "Crazy Cap items" de cada reino). Más `meta` con versión y corte. Se reconstruye de forma atómica (archivo temporal + rename) desde la versión activa.
+- **Nota de conteo:** `kingdom.moons_total` es el número del infobox, que cuenta cada Multi Moon como 3 lunas. `COUNT(*)` sobre `power_moon` cuenta entradas de la lista (una por Multi Moon). La herramienta deberá explicitar cuál reporta.
+- **Resultado (20261119):** 17 reinos, 835 Power Moons, 110 piezas de atuendo y 94 artículos de tienda.

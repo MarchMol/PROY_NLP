@@ -18,9 +18,12 @@ Es un sistema de recuperación aumentada por generación (RAG) agéntico. Respon
 python tasks.py setup        # crea .venv e instala dependencias fijadas
 cp .env.example .env         # luego edita .env (LLM_PROVIDER, LLM_API_KEY, WIKI_CONTACT)
 python tasks.py test         # corre los tests (sin red, LLM en modo mock)
-python tasks.py ingest-download   # descarga los artículos semilla a data/raw/<fecha>/
-python tasks.py ingest-chunks     # limpia y trocea el último snapshot (ventanas 200/300/500)
+python tasks.py ingest       # un comando: chunks + Chroma + BM25 + SQLite (idempotente)
 ```
+
+`ingest` usa los snapshots versionados en `data/raw/`; si no hay ninguno, descarga uno. La primera vez baja el modelo de embeddings (~1.1 GB) y tarda varios minutos en CPU; las siguientes solo re-embeben lo que cambió.
+
+Otras tareas: `ingest-download` (snapshot nuevo de la wiki) e `ingest-chunks` (solo chunks, ventanas 200/300/500).
 
 Con `make` disponible: `make setup`, `make test`.
 

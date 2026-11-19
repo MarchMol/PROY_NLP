@@ -66,6 +66,11 @@ def ingest_chunks() -> int:
     return 0
 
 
+def ingest() -> int:
+    """Un comando: snapshot → chunks → Chroma + BM25 + SQLite (idempotente)."""
+    return _run(PY, "-m", "marioqa.ingest.pipeline")
+
+
 TASKS: dict[str, Callable[[], int]] = {
     "setup": setup,
     "test": test,
@@ -73,6 +78,7 @@ TASKS: dict[str, Callable[[], int]] = {
     "fmt": fmt,
     "ingest-download": ingest_download,
     "ingest-chunks": ingest_chunks,
+    "ingest": ingest,
 }
 
 
